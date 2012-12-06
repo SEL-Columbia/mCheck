@@ -6,7 +6,12 @@
 
     <groupId>org.who.mCheck</groupId>
     <artifactId>mCheck</artifactId>
+    <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
+    <name>mCheck</name>
+    <modules>
+        <module>fromhub-api</module>
+    </modules>
 
     <properties>
         <db.server>localhost</db.server>
