@@ -4,27 +4,28 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import java.util.Map;
+import java.util.List;
 
-public class FormHubFormDefinition {
-    private String name;
-    private Map<String, String> mappings;
+public class FormHubImportDefinition {
+    private String userName;
+    private String password;
+    private String formHubBaseURL;
+    private List<FormHubFormDefinition> forms;
 
-    public FormHubFormDefinition(String name, Map<String, String> mappings) {
-        this.name = name;
-        this.mappings = mappings;
+    public String userName() {
+        return userName;
     }
 
-    public String name() {
-        return name;
+    public String password() {
+        return password;
     }
 
-    public String url(String baseURL, String previousToken) {
-        return "http://" + baseURL + "/" + name + "%22&format=json&previous_export=" + previousToken;
+    public String formHubBaseURL() {
+        return formHubBaseURL;
     }
 
-    public Map<String, String> mappings() {
-        return mappings;
+    public List<FormHubFormDefinition> forms() {
+        return forms;
     }
 
     @Override

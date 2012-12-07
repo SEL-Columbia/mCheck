@@ -1,0 +1,21 @@
+{
+    "userName": "someUser",
+    "password": "somePassword",
+    "formHubBaseURL": "www.server.org",
+    "forms": [
+        {
+            "name": "form1",
+            "mappings": {
+                "field": "1_FieldInOutput",
+                "another_field": "1_AnotherFieldInOutput"
+            }
+        },
+        {
+            "name": "form2",
+            "mappings": {
+                "field": "2_FieldInOutput",
+                "some_other_field": "2_SomeOtherFieldInOutput"
+            }
+        }
+    ]
+}
