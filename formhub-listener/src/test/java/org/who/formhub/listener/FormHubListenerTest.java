@@ -47,17 +47,21 @@ public class FormHubListenerTest {
         when(formHubImportService.fetchForms()).then(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                Thread.sleep(5);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                }
                 return null;
             }
         });
 
-        new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 formHubListener.fetchFromServer();
             }
-        }).start();
+        });
+        thread.start();
 
 
         new Thread(new Runnable() {
@@ -68,5 +72,6 @@ public class FormHubListenerTest {
         }).start();
 
         verify(formHubImportService, times(1)).fetchForms();
+        thread.interrupt();
     }
 }
