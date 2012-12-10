@@ -24,10 +24,10 @@ public class FormHubImportServiceTest {
 
     @Test
     public void shouldFetchAllForms() throws Exception {
-        FormHubImportProperties commCareImportProperties = properties("/testData/formhub_export.json");
-        List<FormHubFormDefinition> formDefinitions = commCareImportProperties.importDefinition().forms();
+        FormHubImportProperties formHubImportProperties = properties("/testData/formhub_export.json");
+        List<FormHubFormDefinition> formDefinitions = formHubImportProperties.importDefinition().forms();
 
-        new FormHubImportService(commCareImportProperties, formImportService).fetchForms();
+        new FormHubImportService(formHubImportProperties, formImportService).fetchForms();
 
         verify(formImportService).fetchForms(formDefinitions,"www.server.org" ,"someUser", "somePassword");
     }
