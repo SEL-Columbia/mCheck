@@ -42,8 +42,8 @@ public class FormHubFormImportServiceTest {
 
     @Test
     public void shouldFetchFormsFromFormHub() throws Exception {
-        String exportURL = "http://" + baseURL + "/" + formName + "%22&format=json&previous_export=";
-        FormHubFormDefinition formDefinition = setUpForm(formName, 200, "/testData/form.1.dump.json", "");
+        String exportURL = "http://" + baseURL + "/" + formName + "/api?query=%7B%22_id%22%3A+%7B+%22%24gt%22%3A+previousExportToken+%7D%7D";
+        FormHubFormDefinition formDefinition = setUpForm(formName, 200, "/testData/form.1.dump.json", "previousExportToken");
 
         List<FormHubFormInstance> formInstances = service.fetchForms(asList(formDefinition), baseURL, "username", "password");
 
@@ -55,8 +55,8 @@ public class FormHubFormImportServiceTest {
 
     @Test
     public void shouldConvertNullValuesInFormHubFormExportAsEmptyStrings() throws Exception {
-        String exportURL = "http://" + baseURL + "/" + formName + "%22&format=json&previous_export=";
-        FormHubFormDefinition formDefinition = setUpForm(formName, 200, "/testData/form.2.dump.json", "");
+        String exportURL = "http://" + baseURL + "/" + formName + "/api?query=%7B%22_id%22%3A+%7B+%22%24gt%22%3A+previousExportToken+%7D%7D";
+        FormHubFormDefinition formDefinition = setUpForm(formName, 200, "/testData/form.2.dump.json", "previousExportToken");
 
         List<FormHubFormInstance> formInstances = service.fetchForms(asList(formDefinition), baseURL, "username", "password");
 
@@ -70,11 +70,11 @@ public class FormHubFormImportServiceTest {
     public void shouldFetchMultipleFormsWithMultipleInstancesFromFormHub() throws Exception {
         String firstFormName = "mCheck1";
         String secondFormName = "mCheck2";
-        String urlOfFirstExport = "http://" + baseURL + "/" + firstFormName + "%22&format=json&previous_export=OLD-TOKEN";
-        String urlOfSecondExport = "http://" + baseURL + "/" + secondFormName + "%22&format=json&previous_export=";
+        String urlOfFirstExport = "http://" + baseURL + "/" + firstFormName + "/api?query=%7B%22_id%22%3A+%7B+%22%24gt%22%3A+OLD-TOKEN+%7D%7D";
+        String urlOfSecondExport = "http://" + baseURL + "/" + secondFormName + "/api?query=%7B%22_id%22%3A+%7B+%22%24gt%22%3A+previousExportToken+%7D%7D";
 
         FormHubFormDefinition formDefinition = setUpForm(firstFormName, 200, "/testData/form.1.dump.json", "OLD-TOKEN");
-        FormHubFormDefinition secondFormDefinition = setUpForm(secondFormName, 200, "/testData/form.2.dump.json", "");
+        FormHubFormDefinition secondFormDefinition = setUpForm(secondFormName, 200, "/testData/form.2.dump.json", "previousExportToken");
 
         List<FormHubFormInstance> formInstances = service.fetchForms(asList(formDefinition,secondFormDefinition), baseURL, "username", "password");
 
@@ -106,8 +106,8 @@ public class FormHubFormImportServiceTest {
     @Test
     public void shouldUseURLWithoutPreviousTokenWhenThereIsNoToken() throws Exception {
         String formName = "mCheck";
-        String exportURL = "http://" + baseURL + "/" + formName + "%22&format=json&previous_export=";
-        FormHubFormDefinition formDefinition = setUpForm(formName, 200, "/testData/form.3.dump.json", "");
+        String exportURL = "http://" + baseURL + "/" + formName + "/api?query=%7B%22_id%22%3A+%7B+%22%24gt%22%3A+previousExportToken+%7D%7D";
+        FormHubFormDefinition formDefinition = setUpForm(formName, 200, "/testData/form.3.dump.json", "previousExportToken");
 
         service.fetchForms(asList(formDefinition), baseURL, "username", "password");
 

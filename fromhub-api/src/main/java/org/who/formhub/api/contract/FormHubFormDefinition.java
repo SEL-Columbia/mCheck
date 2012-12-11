@@ -20,7 +20,7 @@ public class FormHubFormDefinition {
     }
 
     public String url(String baseURL, String previousToken) {
-        return "http://" + baseURL + "/" + name + "%22&format=json&previous_export=" + previousToken;
+        return "http://" + baseURL + "/" + name + "/api?query=%7B%22_id%22%3A+%7B+%22%24gt%22%3A+" + previousToken+ "+%7D%7D";
     }
 
     public Map<String, String> mappings() {
