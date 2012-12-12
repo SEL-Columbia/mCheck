@@ -12,6 +12,7 @@
     <modules>
         <module>fromhub-api</module>
         <module>formhub-listener</module>
+        <module>mcheck-web</module>
     </modules>
 
     <properties>
