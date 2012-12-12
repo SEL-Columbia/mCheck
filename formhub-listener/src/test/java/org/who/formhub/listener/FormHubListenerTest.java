@@ -10,10 +10,10 @@ import org.who.formhub.api.contract.FormHubFormInstance;
 import org.who.formhub.api.service.FormHubImportService;
 import org.who.formhub.listener.event.FormHubFormEvent;
 
+import java.util.concurrent.CountDownLatch;
+
 import static java.util.Arrays.asList;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.who.formhub.api.util.EasyMap.mapOf;
 
@@ -44,12 +44,15 @@ public class FormHubListenerTest {
 
     @Test
     public void shouldNotInitiateFetchIfFetchingIsAlreadyInProgress() throws Exception {
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
+
         when(formHubImportService.fetchForms()).then(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
                 try {
+                    countDownLatch.countDown();
                     Thread.sleep(5000);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
                 return null;
             }
@@ -63,15 +66,18 @@ public class FormHubListenerTest {
         });
         thread.start();
 
-
         new Thread(new Runnable() {
             @Override
             public void run() {
+                try {
+                    countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 formHubListener.fetchFromServer();
             }
         }).start();
 
         verify(formHubImportService, times(1)).fetchForms();
-        thread.interrupt();
     }
 }
