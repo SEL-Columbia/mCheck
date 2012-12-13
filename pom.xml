@@ -13,6 +13,8 @@
         <module>fromhub-api</module>
         <module>formhub-listener</module>
         <module>mcheck-web</module>
+        <module>mcheck-scheduler</module>
+        <module>mcheck-core</module>
     </modules>
 
     <properties>
