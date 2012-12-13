@@ -1,0 +1,17 @@
+{
+    "userName": "who-forms",
+    "password": "Organization",
+    "formHubBaseURL": "https://formhub.org/",
+    "forms": [
+        {
+            "name": "mCheck",
+            "mappings": {
+                "_id": "formHubId",
+                "demographic/mother_name": "name",
+                "demographic/mother_number": "motherNumber",
+                "mother_bleeding": "isBleeding",
+                "today": "submissionDate"
+            }
+        }
+    ]
+}

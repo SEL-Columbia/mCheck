@@ -24,7 +24,7 @@ public class FormHubImportServiceTest {
 
     @Test
     public void shouldFetchAllForms() throws Exception {
-        FormHubImportProperties formHubImportProperties = properties("/testData/formhub_export.json");
+        FormHubImportProperties formHubImportProperties = properties("/testData/formhub-export.json");
         List<FormHubFormDefinition> formDefinitions = formHubImportProperties.importDefinition().forms();
 
         new FormHubImportService(formHubImportProperties, formImportService).fetchForms();
