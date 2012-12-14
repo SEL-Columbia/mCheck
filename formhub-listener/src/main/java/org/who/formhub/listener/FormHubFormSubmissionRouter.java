@@ -37,12 +37,12 @@ public class FormHubFormSubmissionRouter {
         FormDispatchFailedException exception = new FormDispatchFailedException();
         List<FormHubFormInstance> formInstances = (List<FormHubFormInstance>) event.getParameters().get(FormHubFormEvent.FORM_INSTANCES_PARAMETER);
         for (FormHubFormInstance formInstance : formInstances) {
-            String formName = formInstance.name();
+            String handler = formInstance.handler();
             String parameterJson = gson.toJson(formInstance.fields());
             try {
-                dispatch(formName, parameterJson);
+                dispatch(handler, parameterJson);
             } catch (InvocationTargetException e) {
-                exception.add(new RuntimeException("Failed during dispatch. Method: " + formName
+                exception.add(new RuntimeException("Failed during dispatch. Method: " + handler
                         + ", Parameter JSON: " + parameterJson, e.getTargetException()));
             }
         }
@@ -51,10 +51,10 @@ public class FormHubFormSubmissionRouter {
         }
     }
 
-    private void dispatch(String formName, String parameterJson) throws Exception {
-        Method method = findMethodUsingName(formName);
+    private void dispatch(String handler, String parameterJson) throws Exception {
+        Method method = findMethodUsingName(handler);
         if (method == null) {
-            logger.warn("Cannot dispatch: Unable to find method: " + formName + " in " + routeEventsHere.getClass());
+            logger.warn("Cannot dispatch: Unable to find method: " + handler + " in " + routeEventsHere.getClass());
             return;
         }
         Object parameter = getParameterFromData(method, parameterJson);

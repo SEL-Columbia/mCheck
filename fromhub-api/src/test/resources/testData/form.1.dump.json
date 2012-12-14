@@ -2,11 +2,13 @@
     {
         "_id": 1,
         "mother_name": "Lata",
-        "mother_number": "965326894"
+        "mother_number": "965326894",
+        "_geolocation": []
     },
     {
         "_id": 2,
         "mother_name": "Asha",
-        "mother_number": "757885443"
+        "mother_number": "757885443",
+        "_geolocation": [null, null]
     }
 ]

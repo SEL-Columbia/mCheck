@@ -9,7 +9,7 @@ public class FormHubFormDefinitionTest {
 
     @Test
     public void shouldCreateUrlWithPreviousTokenAsItsNotEmpty() throws Exception {
-        FormHubFormDefinition formDefinition = new FormHubFormDefinition("formName", mapOf("key", "value"));
+        FormHubFormDefinition formDefinition = new FormHubFormDefinition("formName", "handler", mapOf("key", "value"));
 
         String url = formDefinition.url("http://www.server-name.org", "userName", "token");
 
@@ -18,7 +18,7 @@ public class FormHubFormDefinitionTest {
 
     @Test
     public void shouldCreateUrlWithPreviousTokenAsZeroWhenItsEmpty() throws Exception {
-        FormHubFormDefinition formDefinition = new FormHubFormDefinition("formName", mapOf("key", "value"));
+        FormHubFormDefinition formDefinition = new FormHubFormDefinition("formName", "handler", mapOf("key", "value"));
 
         String url = formDefinition.url("http://www.server-name.org", "userName", "");
 
@@ -27,7 +27,7 @@ public class FormHubFormDefinitionTest {
 
     @Test
     public void shouldCreateUrlWithPreviousTokenAsZeroWhenItsNull() throws Exception {
-        FormHubFormDefinition formDefinition = new FormHubFormDefinition("formName", mapOf("key", "value"));
+        FormHubFormDefinition formDefinition = new FormHubFormDefinition("formName", "handler", mapOf("key", "value"));
 
         String url = formDefinition.url("http://www.server-name.org", "userName", null);
 

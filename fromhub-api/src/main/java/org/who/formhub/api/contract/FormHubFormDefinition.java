@@ -12,8 +12,9 @@ public class FormHubFormDefinition {
     private String handler;
     private Map<String, String> mappings;
 
-    public FormHubFormDefinition(String name, Map<String, String> mappings) {
+    public FormHubFormDefinition(String name, String handler, Map<String, String> mappings) {
         this.name = name;
+        this.handler = handler;
         this.mappings = mappings;
     }
 

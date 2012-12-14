@@ -1,19 +1,22 @@
 package org.who.formhub.api.contract;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FormHubFormInstance {
-    private String name;
+public class FormHubFormInstance implements Serializable {
+    private static final long serialVersionUID = 42L;
+
+    private String handler;
     private Map<String, String> fieldsWeCareAbout;
 
     public FormHubFormInstance(FormHubFormDefinition definition, Map<String, String> formDatum) {
-        name = definition.name();
+        handler = definition.handler();
         fieldsWeCareAbout = mapFieldsBasedOnDefinition(definition.mappings(), formDatum);
     }
 
-    public String name() {
-        return name;
+    public String handler() {
+        return handler;
     }
 
     public Map<String, String> fields() {

@@ -1,8 +1,6 @@
 package org.who.formhub.api.service;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +10,21 @@ import org.who.formhub.api.contract.FormHubFormInstance;
 import org.who.formhub.api.contract.FormHubHttpResponse;
 import org.who.formhub.api.repository.AllExportTokens;
 import org.who.formhub.api.util.FormHubHttpClient;
+import org.who.formhub.api.util.FormHubResponseJSONParser;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.gson.stream.JsonToken.NULL;
+import static com.google.gson.stream.JsonToken.NUMBER;
+import static com.google.gson.stream.JsonToken.STRING;
+import static java.lang.Long.toString;
 import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.who.formhub.api.util.FormHubResponseJSONParser.parse;
 
 @Service
 public class FormHubFormImportService {
@@ -58,13 +65,7 @@ public class FormHubFormImportService {
             FormHubFormDefinition definition = formWithResponse.formDefinition;
             FormHubHttpResponse response = formWithResponse.response;
 
-            List<Map<String, String>> formData;
-            try {
-                formData = new Gson().fromJson(response.contentAsString(), new TypeToken<List<Map<String, String>>>() {
-                }.getType());
-            } catch (JsonParseException e) {
-                throw new RuntimeException(response.contentAsString() + e);
-            }
+            List<Map<String, String>> formData = parse(response);
             for (Map<String, String> formDatum : formData) {
                 formInstances.add(new FormHubFormInstance(definition, formDatum));
                 updateToken(definition.name(), formDatum.get(UPDATE_TOKEN_FIELD));

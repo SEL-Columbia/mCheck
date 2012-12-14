@@ -32,19 +32,19 @@ public class FormHubFormSubmissionRouterTest {
     }
 
     @Test
-    public void shouldDispatchToMethodWithSameNameAsFormName() throws Exception {
+    public void shouldDispatchToMethodWithSameNameAsHandler() throws Exception {
         router.registerForDispatch(mCheckController);
-        FormHubFormInstance formInstance = new FormHubFormInstanceBuilder().withName("checkMother").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build();
+        FormHubFormInstance formInstance = new FormHubFormInstanceBuilder().withName("checkMother").withHandler("registerMother").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build();
 
         router.handle(eventFor(formInstance));
 
-        verify(mCheckController).checkMother(new FakeCheckMotherRequest("Theresa"));
+        verify(mCheckController).registerMother(new FakeCheckMotherRequest("Theresa"));
     }
 
     @Test
     public void shouldNotDoAnythingIfNoMethodIsFound() throws Exception {
         router.registerForDispatch(mCheckController);
-        FormHubFormInstance formInstance = new FormHubFormInstanceBuilder().withName("invalidCheckMother").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build();
+        FormHubFormInstance formInstance = new FormHubFormInstanceBuilder().withName("checkMother").withHandler("invalidHandler").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build();
 
         router.handle(eventFor(formInstance));
 
@@ -52,9 +52,9 @@ public class FormHubFormSubmissionRouterTest {
     }
 
     @Test
-    public void shouldNotDoIfNoneIsRegistered() throws Exception {
+    public void shouldNotDoAnythingIfNoneIsRegistered() throws Exception {
         router.registerForDispatch(null);
-        FormHubFormInstance formInstance = new FormHubFormInstanceBuilder().withName("invalidCheckMother").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build();
+        FormHubFormInstance formInstance = new FormHubFormInstanceBuilder().withName("invalidCheckMother").withHandler("registerMother").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build();
 
         router.handle(eventFor(formInstance));
     }
@@ -64,7 +64,7 @@ public class FormHubFormSubmissionRouterTest {
         router.registerForDispatch(mCheckController);
         mCheckController.methodWhichThrowsAnException(any(FakeCheckMotherRequest.class));
         doThrow(new RuntimeException("boo")).when(mCheckController).methodWhichThrowsAnException(any(FakeCheckMotherRequest.class));
-        FormHubFormInstance formInstance = new FormHubFormInstanceBuilder().withName("methodWhichThrowsAnException").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build();
+        FormHubFormInstance formInstance = new FormHubFormInstanceBuilder().withName("checkMother").withHandler("methodWhichThrowsAnException").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build();
 
         router.handle(eventFor(formInstance));
     }
@@ -77,10 +77,10 @@ public class FormHubFormSubmissionRouterTest {
         doThrow(new RuntimeException("boo")).when(mCheckController).methodWhichThrowsAnException(any(FakeCheckMotherRequest.class));
 
         MotechEvent event = eventFor(
-                new FormHubFormInstanceBuilder().withName("checkMother").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build(),
-                new FormHubFormInstanceBuilder().withName("methodWhichThrowsAnException").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build(),
-                new FormHubFormInstanceBuilder().withName("methodWhichThrowsAnException").withMapping("mother_", "motherName").withMapping("ph_no", "number").withContent(EasyMap.create("mother_", "Theresa").put("ph_no", "9876543210").map()).build(),
-                new FormHubFormInstanceBuilder().withName("checkMother").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build());
+                new FormHubFormInstanceBuilder().withName("checkMother").withHandler("registerMother").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build(),
+                new FormHubFormInstanceBuilder().withName("checkMother").withHandler("methodWhichThrowsAnException").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build(),
+                new FormHubFormInstanceBuilder().withName("checkMother").withHandler("methodWhichThrowsAnException").withMapping("mother_", "motherName").withMapping("ph_no", "number").withContent(EasyMap.create("mother_", "Theresa").put("ph_no", "9876543210").map()).build(),
+                new FormHubFormInstanceBuilder().withName("checkMother").withHandler("registerMother").withMapping("mother_", "motherName").withContent(mapOf("mother_", "Theresa")).build());
 
         try {
             router.handle(event);
@@ -99,7 +99,7 @@ public class FormHubFormSubmissionRouterTest {
             assertThat(e.innerExceptions().get(1).getCause().getMessage(), is("boo"));
         }
 
-        verify(mCheckController, times(2)).checkMother(new FakeCheckMotherRequest("Theresa"));
+        verify(mCheckController, times(2)).registerMother(new FakeCheckMotherRequest("Theresa"));
     }
 
     private MotechEvent eventFor(FormHubFormInstance... formHubFormInstances) {

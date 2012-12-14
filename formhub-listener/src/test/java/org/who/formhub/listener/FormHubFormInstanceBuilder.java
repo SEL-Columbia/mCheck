@@ -10,6 +10,7 @@ public class FormHubFormInstanceBuilder {
     private String formName;
     private Map<String, String> mappings;
     private Map<String, String> content;
+    private String handler;
 
     public FormHubFormInstanceBuilder() {
         this.mappings = new HashMap<>();
@@ -31,6 +32,11 @@ public class FormHubFormInstanceBuilder {
     }
 
     public FormHubFormInstance build() {
-        return new FormHubFormInstance(new FormHubFormDefinition(formName, mappings), content);
+        return new FormHubFormInstance(new FormHubFormDefinition(formName, handler, mappings), content);
+    }
+
+    public FormHubFormInstanceBuilder withHandler(String handler) {
+        this.handler = handler;
+        return this;
     }
 }
