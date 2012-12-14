@@ -3,6 +3,8 @@ package org.who.formhub.api.service;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.who.formhub.api.contract.FormHubFormDefinition;
@@ -20,6 +22,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 @Service
 public class FormHubFormImportService {
     public static final String UPDATE_TOKEN_FIELD = "_id";
+    private final Logger logger = LoggerFactory.getLogger(FormHubFormImportService.class);
     private FormHubHttpClient httpClient;
     private AllExportTokens allExportTokens;
 
@@ -30,7 +33,9 @@ public class FormHubFormImportService {
     }
 
     public List<FormHubFormInstance> fetchForms(List<FormHubFormDefinition> formDefinitions, String baseUrl, String username, String password) {
-        return processAllForms(fetchAllForms(formDefinitions, baseUrl, username, password));
+        List<FormHubFormInstance> formInstances = processAllForms(fetchAllForms(formDefinitions, baseUrl, username, password));
+        logger.info("Fetched " + formInstances.size() + " formInstances.");
+        return formInstances;
     }
 
     private List<FormHubFormWithResponse> fetchAllForms(List<FormHubFormDefinition> formDefinitions, String baseUrl, String username, String password) {
@@ -38,7 +43,7 @@ public class FormHubFormImportService {
         for (FormHubFormDefinition formDefinition : formDefinitions) {
 
             String oldToken = allExportTokens.findByFormName(formDefinition.name()).value();
-            FormHubHttpResponse formHubHttpResponse = httpClient.get(formDefinition.url(baseUrl, oldToken), baseUrl, username, password);
+            FormHubHttpResponse formHubHttpResponse = httpClient.get(formDefinition.url(baseUrl, username, oldToken), baseUrl, username, password);
 
             if (formHubHttpResponse.isValid()) {
                 formWithResponses.add(new FormHubFormWithResponse(formDefinition, formHubHttpResponse));

@@ -55,7 +55,7 @@ public class MCheckScheduler {
     }
 
     @MotechListener(subjects = SUBJECT)
-    public void fetchMCheckFroms(MotechEvent event) throws Exception {
+    public void fetchMCheckForms(MotechEvent event) throws Exception {
         if (!shouldFetchForms) return;
 
         formHubListener.fetchFromServer();

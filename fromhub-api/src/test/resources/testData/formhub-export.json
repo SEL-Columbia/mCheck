@@ -5,6 +5,7 @@
     "forms": [
         {
             "name": "form1",
+            "handler" : "form1handler",
             "mappings": {
                 "field": "1_FieldInOutput",
                 "another_field": "1_AnotherFieldInOutput"
@@ -12,6 +13,7 @@
         },
         {
             "name": "form2",
+            "handler" : "form2handler",
             "mappings": {
                 "field": "2_FieldInOutput",
                 "some_other_field": "2_SomeOtherFieldInOutput"

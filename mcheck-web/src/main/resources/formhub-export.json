@@ -1,10 +1,11 @@
 {
-    "userName": "who-forms",
+    "userName": "who_forms",
     "password": "Organization",
-    "formHubBaseURL": "https://formhub.org/",
+    "formHubBaseURL": "https://formhub.org",
     "forms": [
         {
-            "name": "mCheck",
+            "name": "mcheck",
+            "handler" : "registerMother",
             "mappings": {
                 "_id": "formHubId",
                 "demographic/mother_name": "name",

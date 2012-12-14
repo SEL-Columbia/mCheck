@@ -41,43 +41,4 @@ public class FormHubListenerTest {
 
         verify(outboundEventGateway).sendEventMessage(new FormHubFormEvent(asList(firstFormInstance, secondFormInstance)).toMotechEvent());
     }
-
-    @Test
-    public void shouldNotInitiateFetchIfFetchingIsAlreadyInProgress() throws Exception {
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-
-        when(formHubImportService.fetchForms()).then(new Answer<Object>() {
-            @Override
-            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                try {
-                    countDownLatch.countDown();
-                    Thread.sleep(5000);
-                } catch (InterruptedException ignored) {
-                }
-                return null;
-            }
-        });
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                formHubListener.fetchFromServer();
-            }
-        });
-        thread.start();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    countDownLatch.await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                formHubListener.fetchFromServer();
-            }
-        }).start();
-
-        verify(formHubImportService, times(1)).fetchForms();
-    }
 }
