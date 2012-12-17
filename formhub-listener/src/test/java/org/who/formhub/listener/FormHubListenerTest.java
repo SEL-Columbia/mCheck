@@ -3,17 +3,14 @@ package org.who.formhub.listener;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.who.formhub.api.contract.FormHubFormInstance;
 import org.who.formhub.api.service.FormHubImportService;
 import org.who.formhub.listener.event.FormHubFormEvent;
 
-import java.util.concurrent.CountDownLatch;
-
 import static java.util.Arrays.asList;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.who.formhub.api.util.EasyMap.mapOf;
 
