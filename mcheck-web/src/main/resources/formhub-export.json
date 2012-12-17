@@ -9,8 +9,8 @@
             "mappings": {
                 "_id": "formHubId",
                 "demographic/mother_name": "name",
-                "demographic/mother_number": "motherNumber",
-                "mother_bleeding": "isBleeding",
+                "demographic/mother_number": "contactNumber",
+                "mother_bleeding": "bleeding",
                 "today": "submissionDate"
             }
         }

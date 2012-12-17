@@ -3,7 +3,7 @@ import org.junit.Test;
 import org.who.formhub.api.contract.FormHubFormDefinition;
 import org.who.formhub.api.util.FormHubImportProperties;
 import org.who.mcheck.core.controller.MCheckController;
-import org.who.mcheck.core.domain.MotherRegistrationRequest;
+import org.who.mcheck.core.contract.MotherRegistrationRequest;
 
 import java.text.MessageFormat;
 import java.util.*;

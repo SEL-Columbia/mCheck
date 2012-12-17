@@ -24,4 +24,10 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="org.who.mcheck"/>
+
+    <bean id="mcheckDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="mCheck"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+
 </beans>
