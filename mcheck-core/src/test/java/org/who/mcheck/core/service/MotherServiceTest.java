@@ -44,6 +44,4 @@ public class MotherServiceTest {
 
         assertEquals(expectedMothers, mothers);
     }
-
-
 }
