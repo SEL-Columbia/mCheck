@@ -18,7 +18,20 @@ public class MotherService {
     }
 
     public void registerMother(MotherRegistrationRequest request) {
-        allMothers.register(new Mother(request.formHubId(), request.name(), request.contactNumber(), request.bleeding(), request.submissionDate()));
+        allMothers.register(
+                new Mother(
+                        request.formHubId(),
+                        request.name(),
+                        request.contactNumber(),
+                        request.hasBleeding(),
+                        request.hasFever(),
+                        request.hasPainfulUrination(),
+                        request.hasVaginalDischarge(),
+                        request.hasHeadache(),
+                        request.hasProblemBreathing(),
+                        request.submissionDate()
+                )
+        );
     }
 
     public List<Mother> fetchAll() {

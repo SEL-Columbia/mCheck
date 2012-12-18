@@ -30,7 +30,7 @@ public class MotherControllerTest {
 
     @Test
     public void shouldFetchAllMothersAndReturnCorrespondingModelAndView() throws Exception {
-        List<Mother> allMothers = asList(new Mother("id", "Anamika", "1234567890", "no", "2013-01-01"));
+        List<Mother> allMothers = asList(new Mother("id", "Anamika", "1234567890", "no", "no", "yes", "no", "yes", "no", "2013-01-01"));
         when(motherService.fetchAll()).thenReturn(allMothers);
 
         standaloneSetup(controller).build().perform(get("/mother/all"))

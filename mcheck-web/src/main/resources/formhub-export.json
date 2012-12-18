@@ -10,7 +10,12 @@
                 "_id": "formHubId",
                 "demographic/mother_name": "name",
                 "demographic/mother_number": "contactNumber",
-                "mother_bleeding": "bleeding",
+                "mother_bleeding": "hasBleeding",
+                "mother_fever": "hasFever",
+                "mother_painful_urination": "hasPainfulUrination",
+                "mother_vaginal_discharge": "hasVaginalDischarge",
+                "mother_headache": "hasHeadache",
+                "mother_breathing": "hasProblemBreathing",
                 "today": "submissionDate"
             }
         }

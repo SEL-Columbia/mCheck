@@ -26,7 +26,7 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldRegisterAMother() {
-        Mother mother = new Mother("id", "Anamika", "1234567890", "no", "2013-01-01");
+        Mother mother = new Mother("id", "Anamika", "1234567890", "no", "no", "yes", "no", "yes", "no", "2013-01-01");
 
         allMothers.register(mother);
 

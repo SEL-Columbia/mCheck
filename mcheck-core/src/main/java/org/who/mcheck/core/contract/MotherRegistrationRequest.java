@@ -8,14 +8,24 @@ public class MotherRegistrationRequest {
     private String formHubId;
     private String name;
     private String contactNumber;
-    private String bleeding;
+    private String hasBleeding;
+    private String hasFever;
+    private String hasPainfulUrination;
+    private String hasVaginalDischarge;
+    private String hasHeadache;
+    private String hasProblemBreathing;
     private String submissionDate;
 
-    public MotherRegistrationRequest(String formHubId, String name, String contactNumber, String bleeding, String submissionDate) {
+    public MotherRegistrationRequest(String formHubId, String name, String contactNumber, String hasBleeding, String hasFever, String hasPainfulUrination, String hasVaginalDischarge, String hasHeadache, String hasProblemBreathing, String submissionDate) {
         this.formHubId = formHubId;
         this.name = name;
         this.contactNumber = contactNumber;
-        this.bleeding = bleeding;
+        this.hasBleeding = hasBleeding;
+        this.hasFever = hasFever;
+        this.hasPainfulUrination = hasPainfulUrination;
+        this.hasVaginalDischarge = hasVaginalDischarge;
+        this.hasHeadache = hasHeadache;
+        this.hasProblemBreathing = hasProblemBreathing;
         this.submissionDate = submissionDate;
     }
 
@@ -31,8 +41,28 @@ public class MotherRegistrationRequest {
         return contactNumber;
     }
 
-    public String bleeding() {
-        return bleeding;
+    public String hasBleeding() {
+        return hasBleeding;
+    }
+
+    public String hasFever() {
+        return hasFever;
+    }
+
+    public String hasPainfulUrination() {
+        return hasPainfulUrination;
+    }
+
+    public String hasVaginalDischarge() {
+        return hasVaginalDischarge;
+    }
+
+    public String hasHeadache() {
+        return hasHeadache;
+    }
+
+    public String hasProblemBreathing() {
+        return hasProblemBreathing;
     }
 
     public String submissionDate() {

@@ -9,16 +9,22 @@
 </head>
 
 <body>
-<div class="container">
+<div class="container-fluid">
     <h2>All registered mothers</h2>
     <table class="table table-bordered table-condensed">
         <thead style="background-color: #08C; color: #ffffff; text-decoration: none;">
         <tr>
             <th>#</th>
             <th>Mother Name</th>
-            <th>ID</th>
+            <th>FormHub ID</th>
             <th>Phone No.</th>
-            <th>Bleeding</th>
+            <th>Has Problem Bleeding</th>
+            <th>Has Fever</th>
+            <th>Has Vaginal Discharge</th>
+            <th>Has Problem Breathing</th>
+            <th>Has Painful Urination</th>
+            <th>Has Headache</th>
+            <th>Registration Date</th>
         </tr>
         </thead>
         <tbody>
@@ -28,7 +34,13 @@
                 <td>${mother.name()}</td>
                 <td>${mother.formHubID()}</td>
                 <td>${mother.contactNumber()}</td>
-                <td>${mother.bleeding()}</td>
+                <td>${mother.hasBleeding()}</td>
+                <td>${mother.hasFever()}</td>
+                <td>${mother.hasVaginalDischarge()}</td>
+                <td>${mother.hasProblemBreathing()}</td>
+                <td>${mother.hasPainfulUrination()}</td>
+                <td>${mother.hasHeadache()}</td>
+                <td>${mother.registrationDate()}</td>
             </tr>
         </c:forEach>
         </tbody>
