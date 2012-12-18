@@ -13,7 +13,7 @@ public class FormHubFormDefinitionTest {
 
         String url = formDefinition.url("http://www.server-name.org", "userName", "token");
 
-        assertEquals("http://www.server-name.org/userName/forms/formName/api?query=%7B%22_id%22%3A+%7B%22%24gt%22+%3A+" + "token" + "%7D%7D", url);
+        assertEquals("http://www.server-name.org/userName/forms/formName/api?sort=%7B%22_id%22%3A+1%7D&query=%7B%22_id%22%3A+%7B%22%24gt%22+%3A+" + "token" + "%7D%7D", url);
     }
 
     @Test
@@ -22,7 +22,7 @@ public class FormHubFormDefinitionTest {
 
         String url = formDefinition.url("http://www.server-name.org", "userName", "");
 
-        assertEquals("http://www.server-name.org/userName/forms/formName/api?query=%7B%22_id%22%3A+%7B%22%24gt%22+%3A+" + "0" + "%7D%7D", url);
+        assertEquals("http://www.server-name.org/userName/forms/formName/api?sort=%7B%22_id%22%3A+1%7D&query=%7B%22_id%22%3A+%7B%22%24gt%22+%3A+" + "0" + "%7D%7D", url);
     }
 
     @Test
@@ -31,7 +31,6 @@ public class FormHubFormDefinitionTest {
 
         String url = formDefinition.url("http://www.server-name.org", "userName", null);
 
-        assertEquals("http://www.server-name.org/userName/forms/formName/api?query=%7B%22_id%22%3A+%7B%22%24gt%22+%3A+" + "0" + "%7D%7D", url);
+        assertEquals("http://www.server-name.org/userName/forms/formName/api?sort=%7B%22_id%22%3A+1%7D&query=%7B%22_id%22%3A+%7B%22%24gt%22+%3A+" + "0" + "%7D%7D", url);
     }
-
 }

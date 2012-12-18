@@ -32,7 +32,7 @@ public class FormHubFormDefinition {
 
     public String url(String baseURL, String username, String previousToken) {
         String token = StringUtils.isBlank(previousToken) ? "0" : previousToken;
-        return baseURL + "/" + username + "/forms/" + name + "/api?query=%7B%22_id%22%3A+%7B%22%24gt%22+%3A+" + token+ "%7D%7D";
+        return baseURL + "/" + username + "/forms/" + name + "/api?sort=%7B%22_id%22%3A+1%7D&query=%7B%22_id%22%3A+%7B%22%24gt%22+%3A+" + token+ "%7D%7D";
     }
 
     @Override

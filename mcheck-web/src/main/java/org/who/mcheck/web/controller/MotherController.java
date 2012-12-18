@@ -20,7 +20,7 @@ public class MotherController {
         this.motherService = motherService;
     }
 
-    @RequestMapping(method = GET)
+    @RequestMapping(method = GET, value = "mother/all")
     public ModelAndView fetchAll() {
         List<Mother> mothers = motherService.fetchAll();
         return new ModelAndView("mother-list", "mothers", mothers);

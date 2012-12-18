@@ -45,4 +45,20 @@ public class Mother extends MotechBaseDataObject {
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
+
+    public String name() {
+        return name;
+    }
+
+    public String formHubID() {
+        return formHubID;
+    }
+
+    public String contactNumber() {
+        return contactNumber;
+    }
+
+    public String bleeding() {
+        return bleeding;
+    }
 }
