@@ -7,7 +7,12 @@ import org.who.mcheck.core.contract.MotherRegistrationRequest;
 import org.who.mcheck.core.domain.Mother;
 import org.who.mcheck.core.repository.AllMothers;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class MotherServiceTest {
@@ -29,4 +34,16 @@ public class MotherServiceTest {
 
         verify(allMothers).register(new Mother("id", "Anamika", "1234567890", "no", "2013-01-01"));
     }
+
+    @Test
+    public void shouldFetchAllMothers() throws Exception {
+        List<Mother> expectedMothers = asList(new Mother("id", "Anamika", "1234567890", "no", "2013-01-01"));
+        when(allMothers.getAll()).thenReturn(expectedMothers);
+
+        List<Mother> mothers = service.fetchAll();
+
+        assertEquals(expectedMothers, mothers);
+    }
+
+
 }
