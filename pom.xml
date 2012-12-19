@@ -35,12 +35,6 @@
             <url>http://nexus.motechproject.org/content/repositories/releases</url>
             <uniqueVersion>false</uniqueVersion>
         </repository>
-        <snapshotRepository>
-            <id>motech.nexus</id>
-            <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/drishti</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
     </distributionManagement>
 
     <repositories>
@@ -61,15 +55,6 @@
             <id>spring-maven-milestone</id>
             <name>Spring Maven Milestone Repository</name>
             <url>http://maven.springframework.org/milestone</url>
-        </repository>
-        <repository>
-            <id>motech.drishti</id>
-            <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/drishti</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>${drishti.updatePolicy}</updatePolicy>
-            </snapshots>
         </repository>
         <repository>
             <id>motech.nexus</id>
