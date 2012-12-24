@@ -124,6 +124,11 @@
             <artifactId>spring-test-mvc</artifactId>
             <version>1.0.0.M1</version>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
-
 </project>
