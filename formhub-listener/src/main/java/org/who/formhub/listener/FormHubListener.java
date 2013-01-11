@@ -1,6 +1,6 @@
 package org.who.formhub.listener;
 
-import org.motechproject.scheduler.gateway.OutboundEventGateway;
+import org.motechproject.event.OutboundEventGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

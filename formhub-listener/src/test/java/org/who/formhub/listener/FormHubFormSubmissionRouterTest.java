@@ -3,7 +3,7 @@ package org.who.formhub.listener;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.scheduler.domain.MotechEvent;
+import org.motechproject.event.MotechEvent;
 import org.who.formhub.api.contract.FormHubFormInstance;
 import org.who.formhub.api.util.EasyMap;
 import org.who.formhub.listener.event.FakeCheckMotherRequest;

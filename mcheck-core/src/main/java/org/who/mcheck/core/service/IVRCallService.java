@@ -1,13 +1,12 @@
 package org.who.mcheck.core.service;
 
-import org.motechproject.decisiontree.model.AudioPrompt;
-import org.motechproject.decisiontree.model.Node;
-import org.motechproject.decisiontree.model.Tree;
-import org.motechproject.decisiontree.repository.AllTrees;
+import org.motechproject.decisiontree.core.model.AudioPrompt;
+import org.motechproject.decisiontree.core.model.Node;
+import org.motechproject.decisiontree.core.model.Tree;
+import org.motechproject.decisiontree.core.repository.AllTrees;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class IVRCallService {

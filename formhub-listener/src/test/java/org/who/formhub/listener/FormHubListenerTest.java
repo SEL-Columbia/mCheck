@@ -3,7 +3,7 @@ package org.who.formhub.listener;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.scheduler.gateway.OutboundEventGateway;
+import org.motechproject.event.OutboundEventGateway;
 import org.who.formhub.api.contract.FormHubFormInstance;
 import org.who.formhub.api.service.FormHubImportService;
 import org.who.formhub.listener.event.FormHubFormEvent;

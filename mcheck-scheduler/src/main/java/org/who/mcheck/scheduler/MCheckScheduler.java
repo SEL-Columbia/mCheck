@@ -1,9 +1,9 @@
 package org.who.mcheck.scheduler;
 
+import org.motechproject.event.MotechEvent;
+import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.scheduler.MotechSchedulerService;
-import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduler.domain.RepeatingSchedulableJob;
-import org.motechproject.server.event.annotations.MotechListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class MCheckScheduler {
 
         Date startTime = now().plusSeconds(mCheckPollStartTime).toDate();
         MotechEvent event = new MotechEvent(SUBJECT, new HashMap<String, Object>());
-        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, mCheckPollInterval * MILLIS_PER_SECOND);
+        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, mCheckPollInterval * MILLIS_PER_SECOND, true);
 
         service.safeScheduleRepeatingJob(job);
 

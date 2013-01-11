@@ -1,6 +1,6 @@
 package org.who.formhub.listener.event;
 
-import org.motechproject.scheduler.domain.MotechEvent;
+import org.motechproject.event.MotechEvent;
 import org.who.formhub.api.contract.FormHubFormInstance;
 
 import java.util.HashMap;

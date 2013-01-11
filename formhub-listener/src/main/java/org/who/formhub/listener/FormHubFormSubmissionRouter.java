@@ -3,8 +3,8 @@ package org.who.formhub.listener;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import org.motechproject.dao.MotechJsonReader;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.server.event.annotations.MotechListener;
+import org.motechproject.event.MotechEvent;
+import org.motechproject.event.listener.annotations.MotechListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class FormHubFormSubmissionRouter {
 
     @MotechListener(subjects = EVENT_SUBJECT)
     public void handle(MotechEvent event) throws Exception {
-        if(routeEventsHere == null) {
+        if (routeEventsHere == null) {
             logger.warn("No one is registered to whom events can be dispatched.");
             return;
         }

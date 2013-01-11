@@ -13,7 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:applicationContext-formhub-api.xml")
+@ContextConfiguration("classpath:test-applicationContext-formhub-api.xml")
 public class AllExportTokensIntegrationTest {
     @Autowired
     private AllExportTokens allExportTokens;
