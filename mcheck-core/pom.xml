@@ -105,6 +105,10 @@
             <version>${motech.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <artifactId>motech-ivr-kookoo</artifactId>
+            <groupId>org.motechproject</groupId>
+            <version>${motech.version}</version>
+        </dependency>
     </dependencies>
-
 </project>

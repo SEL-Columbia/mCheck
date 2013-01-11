@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <import resource="classpath:applicationPlatformIVR.xml"/>
+    <import resource="classpath*:applicationDecisionTree.xml"/>
+
+    <util:properties id="ivrProperties" location="classpath:/ivr.properties"/>
+
+    <bean id="httpClient" class="org.ektorp.spring.HttpClientFactoryBean"/>
+    <bean id="kookooIvrDbConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="motech-ivr-kookoo"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+    <bean id="callFlowController" class="org.motechproject.ivr.kookoo.extensions.CallFlowControllerImpl"/>
+    <bean id="ivrMessage" class="org.motechproject.ivr.kookoo.domain.KookooIVRMessage"/>
+    <bean id="ivrServiceKookoo" class="org.motechproject.ivr.kookoo.KookooCallServiceImpl"/>
+</beans>
