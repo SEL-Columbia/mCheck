@@ -100,12 +100,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.motechproject</groupId>
-            <artifactId>motech-testing-utils</artifactId>
-            <version>${motech.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <artifactId>motech-ivr-kookoo</artifactId>
             <groupId>org.motechproject</groupId>
             <version>${motech.version}</version>

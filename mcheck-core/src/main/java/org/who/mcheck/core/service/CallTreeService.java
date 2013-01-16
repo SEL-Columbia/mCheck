@@ -7,25 +7,31 @@ import org.motechproject.decisiontree.core.model.Tree;
 import org.motechproject.decisiontree.core.repository.AllTrees;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IVRCallService {
+public class CallTreeService {
 
     private AllTrees allTrees;
+    private final String treeName;
+    private final String audioFileUrl;
 
     @Autowired
-    public IVRCallService(@Qualifier("treeDao") AllTrees allTrees) {
+    public CallTreeService(@Qualifier("treeDao") AllTrees allTrees,
+                           @Value("#{mCheck['ivr.tree.name']}") String treeName,
+                           @Value("#{mCheck['ivr.audio.file.url']}") String audioFileUrl) {
         this.allTrees = allTrees;
-        createTree();
+        this.treeName = treeName;
+        this.audioFileUrl = audioFileUrl;
     }
 
-    public void createTree() {
-        Node rootNode = new Node().addPrompts(new AudioPrompt().setAudioFileUrl("http://li310-155.members.linode.com/sample.wav"));
+    public void createMCheckIVRTrees() {
+        Node rootNode = new Node().addPrompts(new AudioPrompt().setAudioFileUrl(audioFileUrl));
         Tree tree = new Tree()
-                .setName("mCheckTree")
+                .setName(treeName)
                 .setRootTransition(new Transition().setDestinationNode(rootNode));
 
-        allTrees.add(tree);
+        allTrees.addOrReplace(tree);
     }
 }

@@ -1,0 +1,23 @@
+{
+    "name": "Post Pregnancy Danger Signs",
+    "absolute": false,
+    "milestones": [
+        {
+            "name": "Day 1",
+            "scheduleWindows": {
+                "earliest": ["0 Days"],
+                "due": ["1 Day"],
+                "late": ["2 Days"],
+                "max": ["1 Day"]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }
+            ]
+        }
+    ]
+}
