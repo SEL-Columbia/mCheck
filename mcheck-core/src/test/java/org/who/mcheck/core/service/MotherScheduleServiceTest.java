@@ -1,12 +1,10 @@
 package org.who.mcheck.core.service;
 
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
-import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 
@@ -16,18 +14,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class MotherScheduleServiceTest {
-    private MotherScheduleService service;
     @Mock
     private ScheduleTrackingService scheduleTrackingService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new MotherScheduleService(scheduleTrackingService);
     }
 
     @Test
     public void shouldEnrollMotherToPostPregnancyDangerSignsSchedule() throws Exception {
+        MotherScheduleService service = new MotherScheduleService(scheduleTrackingService, "14:00:00");
         service.enroll("id", "2013-01-01");
 
         verify(scheduleTrackingService).enroll(enrollmentFor("id", "Post Pregnancy Danger Signs", parse("2013-01-01")));
