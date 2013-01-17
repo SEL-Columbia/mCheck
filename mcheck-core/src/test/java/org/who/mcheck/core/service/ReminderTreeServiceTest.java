@@ -15,7 +15,7 @@ import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class CallTreeServiceTest {
+public class ReminderTreeServiceTest {
     @Mock
     private AllTrees allTrees;
 
@@ -26,7 +26,7 @@ public class CallTreeServiceTest {
 
     @Test
     public void shouldCreateCallTree() throws Exception {
-        CallTreeService service = new CallTreeService(allTrees, "tree name", "audio file url");
+        ReminderTreeService service = new ReminderTreeService(allTrees, "tree name", "audio file url");
 
         service.createMCheckIVRTrees();
 

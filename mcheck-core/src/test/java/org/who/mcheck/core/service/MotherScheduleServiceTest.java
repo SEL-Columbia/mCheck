@@ -1,10 +1,12 @@
 package org.who.mcheck.core.service;
 
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
+import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 
@@ -41,5 +43,4 @@ public class MotherScheduleServiceTest {
             }
         });
     }
-
 }

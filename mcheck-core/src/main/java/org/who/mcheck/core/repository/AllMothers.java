@@ -19,4 +19,8 @@ public class AllMothers extends MotechBaseRepository<Mother> {
     public void register(Mother mother) {
         add(mother);
     }
+
+    public boolean motherExists(String id) {
+        return db.contains(id);
+    }
 }
