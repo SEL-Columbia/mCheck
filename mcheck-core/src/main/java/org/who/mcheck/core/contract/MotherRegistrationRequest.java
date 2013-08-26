@@ -5,64 +5,64 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class MotherRegistrationRequest {
-    private String formHubId;
+    private String formHubID;
     private String name;
+    private String husbandName;
+    private String caseId;
+    private String dateOfDelivery;
+    private String registrationDate;
     private String contactNumber;
-    private String hasBleeding;
-    private String hasFever;
-    private String hasPainfulUrination;
-    private String hasVaginalDischarge;
-    private String hasHeadache;
-    private String hasProblemBreathing;
+    private String dailyCallPreference;
+    private String instanceID;
     private String submissionDate;
 
-    public MotherRegistrationRequest(String formHubId, String name, String contactNumber, String hasBleeding, String hasFever, String hasPainfulUrination, String hasVaginalDischarge, String hasHeadache, String hasProblemBreathing, String submissionDate) {
-        this.formHubId = formHubId;
+    public MotherRegistrationRequest(String formHubID, String name, String husbandName, String caseId, String dateOfDelivery, String registrationDate, String contactNumber, String dailyCallPreference, String instanceID, String submissionDate) {
+        this.formHubID = formHubID;
         this.name = name;
+        this.husbandName = husbandName;
+        this.caseId = caseId;
+        this.dateOfDelivery = dateOfDelivery;
+        this.registrationDate = registrationDate;
         this.contactNumber = contactNumber;
-        this.hasBleeding = hasBleeding;
-        this.hasFever = hasFever;
-        this.hasPainfulUrination = hasPainfulUrination;
-        this.hasVaginalDischarge = hasVaginalDischarge;
-        this.hasHeadache = hasHeadache;
-        this.hasProblemBreathing = hasProblemBreathing;
+        this.dailyCallPreference = dailyCallPreference;
+        this.instanceID = instanceID;
         this.submissionDate = submissionDate;
     }
 
     public String formHubId() {
-        return formHubId;
+        return formHubID;
     }
 
     public String name() {
         return name;
     }
 
+    public String husbandName() {
+        return husbandName;
+    }
+
+    public String caseId() {
+        return caseId;
+    }
+
+    public String dateOfDelivery() {
+        return dateOfDelivery;
+    }
+
+    public String registrationDate() {
+        return registrationDate;
+    }
+
     public String contactNumber() {
         return contactNumber;
     }
 
-    public String hasBleeding() {
-        return hasBleeding;
+    public String dailyCallPreference() {
+        return dailyCallPreference;
     }
 
-    public String hasFever() {
-        return hasFever;
-    }
-
-    public String hasPainfulUrination() {
-        return hasPainfulUrination;
-    }
-
-    public String hasVaginalDischarge() {
-        return hasVaginalDischarge;
-    }
-
-    public String hasHeadache() {
-        return hasHeadache;
-    }
-
-    public String hasProblemBreathing() {
-        return hasProblemBreathing;
+    public String instanceID() {
+        return instanceID;
     }
 
     public String submissionDate() {

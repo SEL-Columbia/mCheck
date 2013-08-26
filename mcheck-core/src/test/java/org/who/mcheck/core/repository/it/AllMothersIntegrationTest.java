@@ -27,7 +27,8 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldRegisterAMother() {
-        Mother mother = new Mother("id", "Anamika", "1234567890", "no", "no", "yes", "no", "yes", "no", "2013-01-01");
+        Mother mother = new Mother("id", "Anamika", "Arun", "caseId",
+                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
 
         allMothers.register(mother);
 
@@ -37,7 +38,8 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldSayThatAMotherDoesNotExistWhenTheMotherIsNotInTheDB() {
-        Mother motherToRegister = new Mother("id", "Anamika", "1234567890", "no", "no", "yes", "no", "yes", "no", "2013-01-01");
+        Mother motherToRegister = new Mother("id", "Anamika", "Arun", "caseId",
+                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
         allMothers.register(motherToRegister);
 
         assertTrue(allMothers.motherExists(motherToRegister.getId()));

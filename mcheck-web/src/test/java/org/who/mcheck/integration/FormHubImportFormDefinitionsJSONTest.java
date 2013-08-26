@@ -30,7 +30,7 @@ public class FormHubImportFormDefinitionsJSONTest {
     public void everyFormInTheJSONShouldHaveAllTheCorrectMappings() {
         Map<String, Class<?>> classEveryFormMappingConvertsTo = new HashMap<>();
 
-        classEveryFormMappingConvertsTo.put("mcheck", MotherRegistrationRequest.class);
+        classEveryFormMappingConvertsTo.put("mCheck_Birth_Registration", MotherRegistrationRequest.class);
 
         assertEveryFormDefinitionInTheJSONHasBeenRepresentedInThisTest(classEveryFormMappingConvertsTo);
         assertThatTheControllerHasTheMethodsCorrespondingToTheseFormNames(MCheckController.class, classEveryFormMappingConvertsTo);

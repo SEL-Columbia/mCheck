@@ -30,16 +30,19 @@ public class MotherServiceTest {
 
     @Test
     public void shouldRegisterMother() throws Exception {
-        MotherRegistrationRequest request = new MotherRegistrationRequest("id", "Anamika", "1234567890", "no", "no", "yes", "no", "yes", "no", "2013-01-01");
+        MotherRegistrationRequest request = new MotherRegistrationRequest("id", "Anamika", "Arun", "caseId",
+                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
 
         service.registerMother(request);
 
-        verify(allMothers).register(new Mother("id", "Anamika", "1234567890", "no", "no", "yes", "no", "yes", "no", "2013-01-01"));
+        verify(allMothers).register(new Mother("id", "Anamika", "Arun", "caseId",
+                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01"));
     }
 
     @Test
     public void shouldEnrollMotherToSchedulesWhenSheIsRegistered() throws Exception {
-        MotherRegistrationRequest request = new MotherRegistrationRequest("id", "Anamika", "1234567890", "no", "no", "yes", "no", "yes", "no", "2013-01-01");
+        MotherRegistrationRequest request = new MotherRegistrationRequest("id", "Anamika", "Arun", "caseId",
+                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
 
         service.registerMother(request);
 
@@ -48,7 +51,8 @@ public class MotherServiceTest {
 
     @Test
     public void shouldFetchAllMothers() throws Exception {
-        List<Mother> expectedMothers = asList(new Mother("id", "Anamika", "1234567890", "no", "yes", "yes", "no", "no", "yes", "2013-01-01"));
+        List<Mother> expectedMothers = asList(new Mother("id", "Anamika", "Arun", "caseId",
+                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01"));
         when(allMothers.getAll()).thenReturn(expectedMothers);
 
         List<Mother> mothers = service.fetchAll();

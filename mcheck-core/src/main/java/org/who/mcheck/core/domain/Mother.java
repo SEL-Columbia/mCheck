@@ -9,41 +9,44 @@ import org.motechproject.model.MotechBaseDataObject;
 
 @TypeDiscriminator("doc.type === 'Mother'")
 public class Mother extends MotechBaseDataObject {
+
     @JsonProperty
     private String formHubID;
     @JsonProperty
     private String name;
     @JsonProperty
-    private String contactNumber;
+    private String husbandName;
     @JsonProperty
-    private String hasBleeding;
+    private String caseId;
     @JsonProperty
-    private String hasFever;
-    @JsonProperty
-    private String hasVaginalDischarge;
-    @JsonProperty
-    private String hasProblemBreathing;
-    @JsonProperty
-    private String hasPainfulUrination;
-    @JsonProperty
-    private String hasHeadache;
+    private String dateOfDelivery;
     @JsonProperty
     private String registrationDate;
+    @JsonProperty
+    private String contactNumber;
+    @JsonProperty
+    private String dailyCallPreference;
+    @JsonProperty
+    private String instanceID;
+    @JsonProperty
+    private String submissionDate;
 
     private Mother() {
     }
 
-    public Mother(String formHubID, String name, String contactNumber, String hasBleeding, String hasFever, String hasPainfulUrination, String hasVaginalDischarge, String hasHeadache, String hasProblemBreathing, String registrationDate) {
+    public Mother(String formHubID, String name, String husbandName, String caseId, String dateOfDelivery,
+                  String registrationDate, String contactNumber, String dailyCallPreference, String instanceID,
+                  String submissionDate) {
         this.formHubID = formHubID;
         this.name = name;
-        this.contactNumber = contactNumber;
-        this.hasBleeding = hasBleeding;
-        this.hasFever = hasFever;
-        this.hasPainfulUrination = hasPainfulUrination;
-        this.hasVaginalDischarge = hasVaginalDischarge;
-        this.hasHeadache = hasHeadache;
-        this.hasProblemBreathing = hasProblemBreathing;
+        this.husbandName = husbandName;
+        this.caseId = caseId;
+        this.dateOfDelivery = dateOfDelivery;
         this.registrationDate = registrationDate;
+        this.contactNumber = contactNumber;
+        this.dailyCallPreference = dailyCallPreference;
+        this.instanceID = instanceID;
+        this.submissionDate = submissionDate;
     }
 
     public String name() {
@@ -56,30 +59,6 @@ public class Mother extends MotechBaseDataObject {
 
     public String contactNumber() {
         return contactNumber;
-    }
-
-    public String hasBleeding() {
-        return hasBleeding;
-    }
-
-    public String hasFever() {
-        return hasFever;
-    }
-
-    public String hasVaginalDischarge() {
-        return hasVaginalDischarge;
-    }
-
-    public String hasProblemBreathing() {
-        return hasProblemBreathing;
-    }
-
-    public String hasPainfulUrination() {
-        return hasPainfulUrination;
-    }
-
-    public String hasHeadache() {
-        return hasHeadache;
     }
 
     public String registrationDate() {

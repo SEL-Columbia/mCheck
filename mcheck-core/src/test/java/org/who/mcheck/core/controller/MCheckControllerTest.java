@@ -26,7 +26,9 @@ public class MCheckControllerTest {
 
     @Test
     public void shouldDelegateMotherRegistrationToMotherService() throws Exception {
-        MotherRegistrationRequest request = new MotherRegistrationRequest("id", "Anamika", "1234567890", "no", "no", "no", "no", "yes", "no", "2013-01-01");
+        MotherRegistrationRequest request = new MotherRegistrationRequest("id", "Anamika", "Arun", "caseId", "2013-01-01", "2013-01-01", "1234567890",
+                "morning", "instanceId", "2013-01-01"
+        );
 
         controller.registerMother(request);
 

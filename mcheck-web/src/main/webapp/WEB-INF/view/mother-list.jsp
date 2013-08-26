@@ -33,12 +33,6 @@
                     <th style="">Mother Name</th>
                     <th>FormHub ID</th>
                     <th>Phone No.</th>
-                    <th>Has Problem Bleeding</th>
-                    <th>Has Fever</th>
-                    <th>Has Vaginal Discharge</th>
-                    <th>Has Problem Breathing</th>
-                    <th>Has Painful Urination</th>
-                    <th>Has Headache</th>
                     <th>Registration Date</th>
                 </tr>
                 </thead>
@@ -49,12 +43,6 @@
                         <td>${mother.name()}</td>
                         <td>${mother.formHubID()}</td>
                         <td>${mother.contactNumber()}</td>
-                        <td>${mother.hasBleeding()}</td>
-                        <td>${mother.hasFever()}</td>
-                        <td>${mother.hasVaginalDischarge()}</td>
-                        <td>${mother.hasProblemBreathing()}</td>
-                        <td>${mother.hasPainfulUrination()}</td>
-                        <td>${mother.hasHeadache()}</td>
                         <td>${mother.registrationDate()}</td>
                     </tr>
                 </c:forEach>

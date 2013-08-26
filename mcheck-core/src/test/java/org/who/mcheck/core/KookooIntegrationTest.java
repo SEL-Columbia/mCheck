@@ -1,6 +1,6 @@
 package org.who.mcheck.core;
 
-import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
@@ -12,13 +12,14 @@ import org.who.formhub.api.util.EasyMap;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-mcheck.xml")
+@Ignore
 public class KookooIntegrationTest {
 
     @Autowired
     @Qualifier("ivrServiceKookoo")
     private IVRService service;
 
-    @Test
+    @Ignore
     public void shouldCallSpecifiedNumber() throws Exception {
         CallRequest callRequest = new CallRequest("098806281", EasyMap.mapOf("", ""),
                 "http://li310-155.members.linode.com/mcheckivr/kookoo/ivr?tree=mCheckTree&trP=Lw&ln=en");

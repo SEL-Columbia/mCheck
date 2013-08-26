@@ -29,7 +29,8 @@ public class ReminderServiceTest {
 
     @Test
     public void shouldInitiateACallToRemindMother() throws Exception {
-        Mother mother = new Mother("id", "Anamika", "1234567890", "no", "no", "yes", "no", "yes", "no", "2013-01-01");
+        Mother mother = new Mother("id", "Anamika", "Arun", "caseId",
+                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
         when(allMothers.motherExists("mother id")).thenReturn(true);
         when(allMothers.get("mother id")).thenReturn(mother);
 

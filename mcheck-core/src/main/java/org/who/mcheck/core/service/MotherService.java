@@ -23,13 +23,13 @@ public class MotherService {
         Mother mother = new Mother(
                 request.formHubId(),
                 request.name(),
+                request.husbandName(),
+                request.caseId(),
+                request.dateOfDelivery(),
+                request.registrationDate(),
                 request.contactNumber(),
-                request.hasBleeding(),
-                request.hasFever(),
-                request.hasPainfulUrination(),
-                request.hasVaginalDischarge(),
-                request.hasHeadache(),
-                request.hasProblemBreathing(),
+                request.dailyCallPreference(),
+                request.instanceID(),
                 request.submissionDate()
         );
         allMothers.register(mother);

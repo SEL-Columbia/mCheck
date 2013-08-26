@@ -4,18 +4,18 @@
     "formHubBaseURL": "https://formhub.org",
     "forms": [
         {
-            "name": "mcheck",
-            "handler" : "registerMother",
+            "name": "mCheck_Birth_Registration",
+            "handler": "registerMother",
             "mappings": {
-                "_id": "formHubId",
-                "demographic/mother_name": "name",
-                "demographic/mother_number": "contactNumber",
-                "mother_bleeding": "hasBleeding",
-                "mother_fever": "hasFever",
-                "mother_painful_urination": "hasPainfulUrination",
-                "mother_vaginal_discharge": "hasVaginalDischarge",
-                "mother_headache": "hasHeadache",
-                "mother_breathing": "hasProblemBreathing",
+                "_id": "formHubID",
+                "Name of the Mother": "name",
+                "Husband's name": "husbandName",
+                "Case ID ": "caseId",
+                "Date of Delivery": "dateOfDelivery",
+                "Registration date": "registrationDate",
+                "Contact number": "contactNumber",
+                "Daily call preference": "dailyCallPreference",
+                "instanceID": "instanceID",
                 "today": "submissionDate"
             }
         }
