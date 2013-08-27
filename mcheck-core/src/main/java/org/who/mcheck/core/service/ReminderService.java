@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.who.mcheck.core.domain.Mother;
 import org.who.mcheck.core.repository.AllMothers;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 
 @Service
@@ -29,7 +30,7 @@ public class ReminderService {
         this.callbackUrl = callbackUrl;
     }
 
-    public void remindMother(String motherId) {
+    public void remindMother(String motherId, String dayWithReferenceToRegistrationDate) {
         if (!allMothers.motherExists(motherId)) {
             log.warn("Got alert for a non-registered mother for ID: " + motherId);
             return;
@@ -37,8 +38,8 @@ public class ReminderService {
 
         Mother mother = allMothers.get(motherId);
 
-        log.info("Calling mother: " + mother + ". Call back URL: " + callbackUrl);
-        CallRequest callRequest = new CallRequest(mother.contactNumber(), new HashMap<String, String>(), callbackUrl);
+        log.info("Calling mother: " + mother + ". Call back URL: " + MessageFormat.format(callbackUrl, dayWithReferenceToRegistrationDate));
+        CallRequest callRequest = new CallRequest(mother.contactNumber(), new HashMap<String, String>(), MessageFormat.format(callbackUrl, dayWithReferenceToRegistrationDate));
         ivrService.initiateCall(callRequest);
     }
 }

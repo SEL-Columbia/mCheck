@@ -10,9 +10,7 @@ import org.who.mcheck.core.domain.Mother;
 import org.who.mcheck.core.repository.AllMothers;
 
 import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ReminderServiceTest {
@@ -34,18 +32,18 @@ public class ReminderServiceTest {
         when(allMothers.motherExists("mother id")).thenReturn(true);
         when(allMothers.get("mother id")).thenReturn(mother);
 
-        ReminderService reminderService = new ReminderService(allMothers, ivrService, "call back url");
-        reminderService.remindMother("mother id");
+        ReminderService reminderService = new ReminderService(allMothers, ivrService, "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-{0}&trP=Lw&ln=en");
+        reminderService.remindMother("mother id", "Day 4");
 
-        verify(ivrService).initiateCall(assertCallRequest(mother.contactNumber(), "call back url"));
+        verify(ivrService).initiateCall(assertCallRequest(mother.contactNumber(), "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-Day 4&trP=Lw&ln=en"));
     }
 
     @Test
     public void shouldNotInitiateACallToRemindMotherWhenMotherNotFound() throws Exception {
         when(allMothers.motherExists("mother id")).thenReturn(false);
 
-        ReminderService reminderService = new ReminderService(allMothers, ivrService, "call back url");
-        reminderService.remindMother("mother id");
+        ReminderService reminderService = new ReminderService(allMothers, ivrService, "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-{0}&trP=Lw&ln=en");
+        reminderService.remindMother("mother id", "Day 1");
 
         verifyZeroInteractions(ivrService);
     }
