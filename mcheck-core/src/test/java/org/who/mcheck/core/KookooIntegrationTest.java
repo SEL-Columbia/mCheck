@@ -21,8 +21,8 @@ public class KookooIntegrationTest {
 
     @Ignore
     public void shouldCallSpecifiedNumber() throws Exception {
-        CallRequest callRequest = new CallRequest("098806281", EasyMap.mapOf("", ""),
-                "http://li310-155.members.linode.com/mcheckivr/kookoo/ivr?tree=mCheckTree&trP=Lw&ln=en");
+        CallRequest callRequest = new CallRequest("09880621281", EasyMap.mapOf("", ""),
+                "http://li310-155.members.linode.com:8080/mcheckivr/kookoo/ivr?tree=mCheckTree&trP=Lw&ln=en");
 
         service.initiateCall(callRequest);
     }
