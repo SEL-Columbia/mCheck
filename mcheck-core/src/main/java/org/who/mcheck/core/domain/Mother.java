@@ -65,6 +65,30 @@ public class Mother extends MotechBaseDataObject {
         return registrationDate;
     }
 
+    public String husbandName() {
+        return husbandName;
+    }
+
+    public String caseId() {
+        return caseId;
+    }
+
+    public String dateOfDelivery() {
+        return dateOfDelivery;
+    }
+
+    public String dailyCallPreference() {
+        return dailyCallPreference;
+    }
+
+    public String instanceID() {
+        return instanceID;
+    }
+
+    public String submissionDate() {
+        return submissionDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);

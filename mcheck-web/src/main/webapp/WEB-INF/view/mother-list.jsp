@@ -30,20 +30,32 @@
                 <thead style="background-color: #08C; color: #ffffff; text-decoration: none;">
                 <tr>
                     <th>#</th>
-                    <th style="">Mother Name</th>
                     <th>FormHub ID</th>
-                    <th>Phone No.</th>
+                    <th style="">Mother Name</th>
+                    <th style="">Husband Name</th>
+                    <th>Case ID</th>
+                    <th>Date of Delivery</th>
                     <th>Registration Date</th>
+                    <th>Contact number</th>
+                    <th>Daily call preference</th>
+                    <th>Instance ID</th>
+                    <th>Submission Date</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach items="${mothers}" var="mother">
                     <tr>
                         <td>${mothers.indexOf(mother) + 1}</td>
-                        <td>${mother.name()}</td>
                         <td>${mother.formHubID()}</td>
-                        <td>${mother.contactNumber()}</td>
+                        <td>${mother.name()}</td>
+                        <td>${mother.husbandName()}</td>
+                        <td>${mother.caseId()}</td>
+                        <td>${mother.dateOfDelivery()}</td>
                         <td>${mother.registrationDate()}</td>
+                        <td>${mother.contactNumber()}</td>
+                        <td>${mother.dailyCallPreference()}</td>
+                        <td>${mother.instanceID()}</td>
+                        <td>${mother.submissionDate()}</td>
                     </tr>
                 </c:forEach>
                 </tbody>
