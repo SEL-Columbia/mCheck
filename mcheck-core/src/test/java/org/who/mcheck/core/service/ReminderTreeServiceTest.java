@@ -26,11 +26,11 @@ public class ReminderTreeServiceTest {
 
     @Test
     public void shouldCreateCallTree() throws Exception {
-        ReminderTreeService service = new ReminderTreeService(allTrees, "tree name", "audio file url");
+        ReminderTreeService service = new ReminderTreeService(allTrees, "treeName", "audio file url");
 
         service.createMCheckIVRTrees();
 
-        verify(allTrees).addOrReplace(assertTree("tree name", "audio file url"));
+        verify(allTrees).addOrReplace(assertTree("treeName", "audio file url"));
     }
 
     private Tree assertTree(final String name, final String audioFileURL) {

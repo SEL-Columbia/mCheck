@@ -27,7 +27,7 @@ public class MotherScheduleServiceTest {
         MotherScheduleService service = new MotherScheduleService(scheduleTrackingService, "14:00:00");
         service.enroll("id", "2013-01-01");
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("id", "Post Pregnancy Danger Signs", parse("2013-01-01")));
+        verify(scheduleTrackingService).enroll(enrollmentFor("id", "Post Delivery Danger Signs", parse("2013-01-01")));
     }
 
     private EnrollmentRequest enrollmentFor(final String externalId, final String scheduleName, final LocalDate referenceDate) {

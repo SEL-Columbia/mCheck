@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import static org.joda.time.LocalDate.parse;
-import static org.who.mcheck.core.AllConstants.Schedule.POST_PREGNANCY_DANGER_SIGNS_SCHEDULE_NAME;
+import static org.who.mcheck.core.AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME;
 
 @Service
 public class MotherScheduleService {
@@ -29,12 +29,12 @@ public class MotherScheduleService {
 
     public void enroll(String motherId, String registrationDate) {
         EnrollmentRequest scheduleEnrollmentRequest = new EnrollmentRequest()
-                .setScheduleName(POST_PREGNANCY_DANGER_SIGNS_SCHEDULE_NAME)
+                .setScheduleName(POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME)
                 .setExternalId(motherId)
                 .setPreferredAlertTime(new Time(LocalTime.parse(preferredCallTime)))
                 .setReferenceDate(parse(registrationDate));
 
-        log.info("Enrolling mother with ID: " + motherId + " to schedule: "+ POST_PREGNANCY_DANGER_SIGNS_SCHEDULE_NAME + " preferred call time: " + preferredCallTime);
+        log.info("Enrolling mother with ID: " + motherId + " to schedule: " + POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME + " preferred call time: " + preferredCallTime);
         scheduleTrackingService.enroll(scheduleEnrollmentRequest);
     }
 }

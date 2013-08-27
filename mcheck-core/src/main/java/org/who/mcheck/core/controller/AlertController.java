@@ -9,7 +9,7 @@ import org.who.mcheck.core.service.ReminderService;
 import org.who.mcheck.scheduler.AlertHandler;
 import org.who.mcheck.scheduler.AlertRouter;
 
-import static org.who.mcheck.core.AllConstants.Schedule.POST_PREGNANCY_DANGER_SIGNS_SCHEDULE_NAME;
+import static org.who.mcheck.core.AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME;
 
 @Component
 public class AlertController implements AlertHandler {
@@ -25,7 +25,7 @@ public class AlertController implements AlertHandler {
 
     @Override
     public void handleEvent(MilestoneEvent event) {
-        if (!POST_PREGNANCY_DANGER_SIGNS_SCHEDULE_NAME.equalsIgnoreCase(event.getScheduleName())) {
+        if (!POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME.equalsIgnoreCase(event.getScheduleName())) {
             log.warn("Got alert for an unknown schedule. Event is : " + event);
             return;
         }
