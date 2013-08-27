@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.who.mcheck.core.domain.Mother;
 import org.who.mcheck.core.service.MotherService;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -23,6 +24,7 @@ public class MotherController {
     @RequestMapping(method = GET, value = "mother/all")
     public ModelAndView fetchAll() {
         List<Mother> mothers = motherService.fetchAll();
+        Collections.reverse(mothers);
         return new ModelAndView("mother-list", "mothers", mothers);
     }
 

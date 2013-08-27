@@ -8,14 +8,14 @@
             "handler": "registerMother",
             "mappings": {
                 "_id": "formHubID",
-                "Name of the Mother": "name",
-                "Husband's name": "husbandName",
-                "Case ID ": "caseId",
-                "Date of Delivery": "dateOfDelivery",
-                "Registration date": "registrationDate",
-                "Contact number": "contactNumber",
-                "Daily call preference": "dailyCallPreference",
-                "instanceID": "instanceID",
+                "Name_Of_Mother": "name",
+                "Husband_Name": "husbandName",
+                "Case_id": "caseId",
+                "Date_of_delivery": "dateOfDelivery",
+                "Registration_date": "registrationDate",
+                "contact_number": "contactNumber",
+                "daily_call_preference": "dailyCallPreference",
+                "meta/instanceID": "instanceID",
                 "today": "submissionDate"
             }
         }

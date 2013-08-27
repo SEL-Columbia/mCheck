@@ -1,6 +1,5 @@
 package org.who.formhub.api.service;
 
-import com.google.gson.stream.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +9,11 @@ import org.who.formhub.api.contract.FormHubFormInstance;
 import org.who.formhub.api.contract.FormHubHttpResponse;
 import org.who.formhub.api.repository.AllExportTokens;
 import org.who.formhub.api.util.FormHubHttpClient;
-import org.who.formhub.api.util.FormHubResponseJSONParser;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.gson.stream.JsonToken.NULL;
-import static com.google.gson.stream.JsonToken.NUMBER;
-import static com.google.gson.stream.JsonToken.STRING;
-import static java.lang.Long.toString;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.who.formhub.api.util.FormHubResponseJSONParser.parse;
 
@@ -40,7 +31,8 @@ public class FormHubFormImportService {
     }
 
     public List<FormHubFormInstance> fetchForms(List<FormHubFormDefinition> formDefinitions, String baseUrl, String username, String password) {
-        List<FormHubFormInstance> formInstances = processAllForms(fetchAllForms(formDefinitions, baseUrl, username, password));
+        List<FormHubFormWithResponse> forms = fetchAllForms(formDefinitions, baseUrl, username, password);
+        List<FormHubFormInstance> formInstances = processAllForms(forms);
         logger.info("Fetched " + formInstances.size() + " formInstances.");
         return formInstances;
     }

@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="refresh" content="5">
     <title>Registered Mothers</title>
     <link href="../../css/bootstrap.css" rel="stylesheet">
 </head>
