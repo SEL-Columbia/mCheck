@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ReminderTreeServiceTest {
@@ -26,11 +27,18 @@ public class ReminderTreeServiceTest {
 
     @Test
     public void shouldCreateCallTree() throws Exception {
-        ReminderTreeService service = new ReminderTreeService(allTrees, "treeName", "audio file url");
+        ReminderTreeService service = new ReminderTreeService(allTrees, "mCheckTree-Day {0}", "http://server.com/PostPartum/Day {0}.mp3");
 
         service.createMCheckIVRTrees();
 
-        verify(allTrees).addOrReplace(assertTree("treeName", "audio file url"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 1", "http://server.com/PostPartum/Day 1.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 2", "http://server.com/PostPartum/Day 2.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 3", "http://server.com/PostPartum/Day 3.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 4", "http://server.com/PostPartum/Day 4.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 5", "http://server.com/PostPartum/Day 5.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 6", "http://server.com/PostPartum/Day 6.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 7", "http://server.com/PostPartum/Day 7.mp3"));
+        verifyNoMoreInteractions(allTrees);
     }
 
     private Tree assertTree(final String name, final String audioFileURL) {

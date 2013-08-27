@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
+
 @Component
 public class ReminderTreeService {
 
@@ -33,11 +35,13 @@ public class ReminderTreeService {
     public void createMCheckIVRTrees() {
         log.info("Creating mCheck IVR trees. Tree name: " + treeName + ", Audio file url: " + audioFileUrl);
 
-        Node rootNode = new Node().addPrompts(new AudioPrompt().setAudioFileUrl(audioFileUrl));
-        Tree tree = new Tree()
-                .setName(treeName)
-                .setRootTransition(new Transition().setDestinationNode(rootNode));
+        for (int day = 1; day <= 7; day++) {
+            Node rootNode = new Node().addPrompts(new AudioPrompt().setAudioFileUrl(MessageFormat.format(audioFileUrl, day)));
+            Tree tree = new Tree()
+                    .setName(MessageFormat.format(treeName, day))
+                    .setRootTransition(new Transition().setDestinationNode(rootNode));
 
-        allTrees.addOrReplace(tree);
+            allTrees.addOrReplace(tree);
+        }
     }
 }
