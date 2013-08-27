@@ -53,40 +53,40 @@ public class MCheckSchedulesIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertsForPNCAtTheRightTimes() throws Exception {
         schedule.enrollFor("Post Delivery Danger Signs", newDate(2012, JANUARY, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("Day 1", earliest);
-        schedule.assertAlertsStartWith("Day 1", due, date(1, JANUARY));
-        schedule.assertNoAlerts("Day 1", late);
-        schedule.assertNoAlerts("Day 1", max);
+        schedule.assertNoAlerts("Day1", earliest);
+        schedule.assertAlertsStartWith("Day1", due, date(1, JANUARY));
+        schedule.assertNoAlerts("Day1", late);
+        schedule.assertNoAlerts("Day1", max);
 
-        schedule.assertNoAlerts("Day 2", earliest);
-        schedule.assertAlertsStartWith("Day 2", due, date(2, JANUARY));
-        schedule.assertNoAlerts("Day 2", late);
-        schedule.assertNoAlerts("Day 2", max);
+        schedule.assertNoAlerts("Day2", earliest);
+        schedule.assertAlertsStartWith("Day2", due, date(2, JANUARY));
+        schedule.assertNoAlerts("Day2", late);
+        schedule.assertNoAlerts("Day2", max);
 
-        schedule.assertNoAlerts("Day 3", earliest);
-        schedule.assertAlertsStartWith("Day 3", due, date(3, JANUARY));
-        schedule.assertNoAlerts("Day 3", late);
-        schedule.assertNoAlerts("Day 3", max);
+        schedule.assertNoAlerts("Day3", earliest);
+        schedule.assertAlertsStartWith("Day3", due, date(3, JANUARY));
+        schedule.assertNoAlerts("Day3", late);
+        schedule.assertNoAlerts("Day3", max);
 
-        schedule.assertNoAlerts("Day 4", earliest);
-        schedule.assertAlertsStartWith("Day 4", due, date(4, JANUARY));
-        schedule.assertNoAlerts("Day 4", late);
-        schedule.assertNoAlerts("Day 4", max);
+        schedule.assertNoAlerts("Day4", earliest);
+        schedule.assertAlertsStartWith("Day4", due, date(4, JANUARY));
+        schedule.assertNoAlerts("Day4", late);
+        schedule.assertNoAlerts("Day4", max);
 
-        schedule.assertNoAlerts("Day 5", earliest);
-        schedule.assertAlertsStartWith("Day 5", due, date(5, JANUARY));
-        schedule.assertNoAlerts("Day 5", late);
-        schedule.assertNoAlerts("Day 5", max);
+        schedule.assertNoAlerts("Day5", earliest);
+        schedule.assertAlertsStartWith("Day5", due, date(5, JANUARY));
+        schedule.assertNoAlerts("Day5", late);
+        schedule.assertNoAlerts("Day5", max);
 
-        schedule.assertNoAlerts("Day 6", earliest);
-        schedule.assertAlertsStartWith("Day 6", due, date(6, JANUARY));
-        schedule.assertNoAlerts("Day 6", late);
-        schedule.assertNoAlerts("Day 6", max);
+        schedule.assertNoAlerts("Day6", earliest);
+        schedule.assertAlertsStartWith("Day6", due, date(6, JANUARY));
+        schedule.assertNoAlerts("Day6", late);
+        schedule.assertNoAlerts("Day6", max);
 
-        schedule.assertNoAlerts("Day 7", earliest);
-        schedule.assertAlertsStartWith("Day 7", due, date(7, JANUARY));
-        schedule.assertNoAlerts("Day 7", late);
-        schedule.assertNoAlerts("Day 7", max);
+        schedule.assertNoAlerts("Day7", earliest);
+        schedule.assertAlertsStartWith("Day7", due, date(7, JANUARY));
+        schedule.assertNoAlerts("Day7", late);
+        schedule.assertNoAlerts("Day7", max);
 
         visualization.outputTo("post-pregnancy-danger-signs.html", 1);
     }

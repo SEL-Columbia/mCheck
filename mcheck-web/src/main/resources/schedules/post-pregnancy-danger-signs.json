@@ -3,7 +3,7 @@
     "absolute": true,
     "milestones": [
         {
-            "name": "Day 1",
+            "name": "Day1",
             "scheduleWindows": {
                 "earliest": ["1 Day"],
                 "due": ["1 Day"],
@@ -20,7 +20,7 @@
             ]
         },
         {
-            "name": "Day 2",
+            "name": "Day2",
             "scheduleWindows": {
                 "earliest": ["2 Days"],
                 "due": ["2 Days"],
@@ -37,7 +37,7 @@
             ]
         },
         {
-            "name": "Day 3",
+            "name": "Day3",
             "scheduleWindows": {
                 "earliest": ["3 Days"],
                 "due": ["3 Days"],
@@ -54,7 +54,7 @@
             ]
         },
         {
-            "name": "Day 4",
+            "name": "Day4",
             "scheduleWindows": {
                 "earliest": ["4 Days"],
                 "due": ["4 Days"],
@@ -71,7 +71,7 @@
             ]
         },
         {
-            "name": "Day 5",
+            "name": "Day5",
             "scheduleWindows": {
                 "earliest": ["5 Days"],
                 "due": ["5 Days"],
@@ -88,7 +88,7 @@
             ]
         },
         {
-            "name": "Day 6",
+            "name": "Day6",
             "scheduleWindows": {
                 "earliest": ["6 Days"],
                 "due": ["6 Days"],
@@ -105,7 +105,7 @@
             ]
         },
         {
-            "name": "Day 7",
+            "name": "Day7",
             "scheduleWindows": {
                 "earliest": ["7 Days"],
                 "due": ["7 Days"],

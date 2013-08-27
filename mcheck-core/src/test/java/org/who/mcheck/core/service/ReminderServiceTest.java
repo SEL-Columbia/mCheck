@@ -33,9 +33,9 @@ public class ReminderServiceTest {
         when(allMothers.get("mother id")).thenReturn(mother);
 
         ReminderService reminderService = new ReminderService(allMothers, ivrService, "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-{0}&trP=Lw&ln=en");
-        reminderService.remindMother("mother id", "Day 4");
+        reminderService.remindMother("mother id", "Day4");
 
-        verify(ivrService).initiateCall(assertCallRequest(mother.contactNumber(), "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-Day 4&trP=Lw&ln=en"));
+        verify(ivrService).initiateCall(assertCallRequest(mother.contactNumber(), "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-Day4&trP=Lw&ln=en"));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class ReminderServiceTest {
         when(allMothers.motherExists("mother id")).thenReturn(false);
 
         ReminderService reminderService = new ReminderService(allMothers, ivrService, "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-{0}&trP=Lw&ln=en");
-        reminderService.remindMother("mother id", "Day 1");
+        reminderService.remindMother("mother id", "Day1");
 
         verifyZeroInteractions(ivrService);
     }

@@ -27,17 +27,17 @@ public class ReminderTreeServiceTest {
 
     @Test
     public void shouldCreateCallTree() throws Exception {
-        ReminderTreeService service = new ReminderTreeService(allTrees, "mCheckTree-Day {0}", "http://server.com/PostPartum/Day {0}.mp3");
+        ReminderTreeService service = new ReminderTreeService(allTrees, "mCheckTree-Day{0}", "http://server.com/PostPartum/Day{0}.mp3");
 
         service.createMCheckIVRTrees();
 
-        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 1", "http://server.com/PostPartum/Day 1.mp3"));
-        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 2", "http://server.com/PostPartum/Day 2.mp3"));
-        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 3", "http://server.com/PostPartum/Day 3.mp3"));
-        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 4", "http://server.com/PostPartum/Day 4.mp3"));
-        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 5", "http://server.com/PostPartum/Day 5.mp3"));
-        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 6", "http://server.com/PostPartum/Day 6.mp3"));
-        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day 7", "http://server.com/PostPartum/Day 7.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day1", "http://server.com/PostPartum/Day1.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day2", "http://server.com/PostPartum/Day2.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day3", "http://server.com/PostPartum/Day3.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day4", "http://server.com/PostPartum/Day4.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day5", "http://server.com/PostPartum/Day5.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day6", "http://server.com/PostPartum/Day6.mp3"));
+        verify(allTrees).addOrReplace(assertTree("mCheckTree-Day7", "http://server.com/PostPartum/Day7.mp3"));
         verifyNoMoreInteractions(allTrees);
     }
 
