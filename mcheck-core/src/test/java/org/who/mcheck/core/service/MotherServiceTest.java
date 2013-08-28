@@ -46,7 +46,7 @@ public class MotherServiceTest {
 
         service.registerMother(request);
 
-        verify(scheduleService).enroll(null, "2013-01-01");
+        verify(scheduleService).enroll(null, "2013-01-01", "morning");
     }
 
     @Test

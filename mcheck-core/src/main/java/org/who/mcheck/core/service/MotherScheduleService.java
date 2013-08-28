@@ -18,6 +18,7 @@ import org.who.mcheck.core.util.DateUtil;
 import java.text.MessageFormat;
 
 import static org.joda.time.LocalDate.parse;
+import static org.who.mcheck.core.AllConstants.Schedule.MORNING;
 import static org.who.mcheck.core.AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME;
 
 @Service
@@ -25,29 +26,35 @@ public class MotherScheduleService {
     private final Log log = LogFactory.getLog(MotherScheduleService.class);
     private AllSchedules allSchedules;
     private ScheduleTrackingService scheduleTrackingService;
-    private final String preferredCallTime;
+    private String preferredCallTimeInMorning;
+    private String preferredCallTimeInAfternoon;
 
     @Autowired
     public MotherScheduleService(ScheduleTrackingService scheduleTrackingService,
                                  AllSchedules allSchedules,
-                                 @Value("#{mCheck['ivr.preferred.call.time']}") String preferredCallTime) {
+                                 @Value("#{mCheck['ivr.preferred.call.time.morning']}") String preferredCallTimeInMorning,
+                                 @Value("#{mCheck['ivr.preferred.call.time.afternoon']}") String preferredCallTimeInAfternoon) {
         this.scheduleTrackingService = scheduleTrackingService;
         this.allSchedules = allSchedules;
-        this.preferredCallTime = preferredCallTime;
+        this.preferredCallTimeInMorning = preferredCallTimeInMorning;
+        this.preferredCallTimeInAfternoon = preferredCallTimeInAfternoon;
     }
 
-    public void enroll(String motherId, String registrationDate) {
+    public void enroll(String motherId, String registrationDate, String dailyCallPreference) {
         String startingMilestoneName = getStartingMilestoneName(POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME, parse(registrationDate));
+        String preferredAlertTime =
+                MORNING.equalsIgnoreCase(dailyCallPreference)
+                        ? preferredCallTimeInMorning
+                        : preferredCallTimeInAfternoon;
         EnrollmentRequest scheduleEnrollmentRequest = new EnrollmentRequest()
                 .setScheduleName(POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME)
                 .setExternalId(motherId)
-                .setPreferredAlertTime(new Time(LocalTime.parse(preferredCallTime)))
+                .setPreferredAlertTime(new Time(LocalTime.parse(preferredAlertTime)))
                 .setReferenceDate(parse(registrationDate))
-                .setStartingMilestoneName(
-                        startingMilestoneName);
+                .setStartingMilestoneName(startingMilestoneName);
 
         log.info(MessageFormat.format("Enrolling mother with ID: {0} to schedule: {1}, to milestone: {2} preferred call time: {3}",
-                motherId, POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME, startingMilestoneName, preferredCallTime));
+                motherId, POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME, startingMilestoneName, preferredCallTimeInMorning));
         scheduleTrackingService.enroll(scheduleEnrollmentRequest);
     }
 

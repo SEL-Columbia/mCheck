@@ -33,7 +33,7 @@ public class MotherService {
                 request.submissionDate()
         );
         allMothers.register(mother);
-        scheduleService.enroll(mother.getId(), mother.registrationDate());
+        scheduleService.enroll(mother.getId(), mother.registrationDate(), request.dailyCallPreference());
     }
 
     public List<Mother> fetchAll() {
