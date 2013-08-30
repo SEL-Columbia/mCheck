@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.joda.time.Period;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.domain.Milestone;
 import org.motechproject.scheduletracking.api.domain.Schedule;
@@ -60,8 +61,10 @@ public class MotherScheduleService {
 
     private String getStartingMilestoneName(String name, LocalDate referenceDate) {
         Schedule schedule = allSchedules.getByName(name);
+        Period totalDuration = new Period();
         for (Milestone milestone : schedule.getMilestones()) {
-            if (referenceDate.plus(milestone.getMaximumDuration()).isAfter(DateUtil.today()))
+            totalDuration = totalDuration.plus(milestone.getMaximumDuration());
+            if (referenceDate.plus(totalDuration).isAfter(DateUtil.today()))
                 return milestone.getName();
         }
         return null;
