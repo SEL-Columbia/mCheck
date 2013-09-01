@@ -55,7 +55,7 @@ public class MotherScheduleService {
                 .setStartingMilestoneName(startingMilestoneName);
 
         log.info(MessageFormat.format("Enrolling mother with ID: {0} to schedule: {1}, to milestone: {2} preferred call time: {3}",
-                motherId, POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME, startingMilestoneName, preferredCallTimeInMorning));
+                motherId, POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME, startingMilestoneName, preferredAlertTime));
         scheduleTrackingService.enroll(scheduleEnrollmentRequest);
     }
 
