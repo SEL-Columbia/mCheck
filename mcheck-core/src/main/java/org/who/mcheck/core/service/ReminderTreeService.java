@@ -33,14 +33,12 @@ public class ReminderTreeService {
     }
 
     public void createMCheckIVRTrees() {
-        log.info("Creating mCheck IVR trees. Tree name: " + treeName + ", Audio file url: " + audioFileUrl);
-
         for (int day = 1; day <= 7; day++) {
             Node rootNode = new Node().addPrompts(new AudioPrompt().setAudioFileUrl(MessageFormat.format(audioFileUrl, day)));
             Tree tree = new Tree()
                     .setName(MessageFormat.format(treeName, day))
                     .setRootTransition(new Transition().setDestinationNode(rootNode));
-
+            log.info("Creating mCheck IVR trees. Tree name: " + MessageFormat.format(treeName, day) + ", Audio file url: " + audioFileUrl);
             allTrees.addOrReplace(tree);
         }
     }
