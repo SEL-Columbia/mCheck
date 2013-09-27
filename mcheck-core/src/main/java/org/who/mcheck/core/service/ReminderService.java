@@ -28,8 +28,7 @@ public class ReminderService {
     private final IVRService ivrService;
     private final ScheduleTrackingService scheduleTrackingService;
     private final String callbackUrl;
-    private final String preferredCallTimeInMorning;
-    private final String preferredCallTimeInAfternoon;
+    private PreferredCallTimeService preferredCallTimeService;
     private final Log log = LogFactory.getLog(ReminderService.class);
 
     @Autowired
@@ -37,14 +36,12 @@ public class ReminderService {
                            IVRService ivrService,
                            ScheduleTrackingService scheduleTrackingService,
                            @Value("#{mCheck['ivr.callback.url']}") String callbackUrl,
-                           @Value("#{mCheck['ivr.preferred.call.time.morning']}") String preferredCallTimeInMorning,
-                           @Value("#{mCheck['ivr.preferred.call.time.afternoon']}") String preferredCallTimeInAfternoon) {
+                           PreferredCallTimeService preferredCallTimeService) {
         this.allMothers = allMothers;
         this.ivrService = ivrService;
         this.scheduleTrackingService = scheduleTrackingService;
         this.callbackUrl = callbackUrl;
-        this.preferredCallTimeInMorning = preferredCallTimeInMorning;
-        this.preferredCallTimeInAfternoon = preferredCallTimeInAfternoon;
+        this.preferredCallTimeService = preferredCallTimeService;
     }
 
     public void remindMother(String motherId, String scheduleName, String dayWithReferenceToRegistrationDate) {
@@ -65,14 +62,11 @@ public class ReminderService {
         int nextCall = IntegerUtil.tryParse(
                 String.valueOf(dayWithReferenceToRegistrationDate.charAt(dayWithReferenceToRegistrationDate.length() - 1)),
                 0) + 1;
-        String preferredCallTime =
-                AllConstants.Schedule.MORNING.equalsIgnoreCase(mother.dailyCallPreference())
-                        ? preferredCallTimeInMorning
-                        : preferredCallTimeInAfternoon;
+
         enrollToSchedule(motherId,
                 today.plusDays(1),
                 MessageFormat.format(AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, nextCall),
-                LocalTime.parse(preferredCallTime));
+                preferredCallTimeService.getPreferredCallTime(mother.dailyCallPreference()));
     }
 
     private void makeTodaysCall(String dayWithReferenceToRegistrationDate, Mother mother) {

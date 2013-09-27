@@ -22,17 +22,14 @@ public class MotherScheduleService {
     private final Log log = LogFactory.getLog(MotherScheduleService.class);
     private final int firstCallDelay;
     private ScheduleTrackingService scheduleTrackingService;
-    private String preferredCallTimeInMorning;
-    private String preferredCallTimeInAfternoon;
+    private PreferredCallTimeService preferredCallTimeService;
 
     @Autowired
     public MotherScheduleService(ScheduleTrackingService scheduleTrackingService,
-                                 @Value("#{mCheck['ivr.preferred.call.time.morning']}") String preferredCallTimeInMorning,
-                                 @Value("#{mCheck['ivr.preferred.call.time.afternoon']}") String preferredCallTimeInAfternoon,
-                                 @Value("#{mCheck['first.call.delay']}") String firstCallDelay) {
+                                 @Value("#{mCheck['first.call.delay']}") String firstCallDelay,
+                                 PreferredCallTimeService preferredCallTimeService) {
         this.scheduleTrackingService = scheduleTrackingService;
-        this.preferredCallTimeInMorning = preferredCallTimeInMorning;
-        this.preferredCallTimeInAfternoon = preferredCallTimeInAfternoon;
+        this.preferredCallTimeService = preferredCallTimeService;
         this.firstCallDelay = IntegerUtil.tryParse(firstCallDelay, AllConstants.DEFAULT_FIRST_CALL_DELAY_IN_MINUTES);
     }
 
@@ -53,13 +50,9 @@ public class MotherScheduleService {
     }
 
     private void enrollMotherToSecondDaySchedule(String motherId, LocalDate registrationDate, String dailyCallPreference, int firstSchedule) {
-        String secondCallTime =
-                AllConstants.Schedule.MORNING.equalsIgnoreCase(dailyCallPreference)
-                        ? preferredCallTimeInMorning
-                        : preferredCallTimeInAfternoon;
         String secondScheduleName = MessageFormat.format(AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, firstSchedule + 1);
         LocalDate secondScheduleReferenceDate = registrationDate.plusDays(1);
-        enrollToSchedule(motherId, secondScheduleReferenceDate, secondScheduleName, LocalTime.parse(secondCallTime));
+        enrollToSchedule(motherId, secondScheduleReferenceDate, secondScheduleName, preferredCallTimeService.getPreferredCallTime(dailyCallPreference));
     }
 
     private void enrollToSchedule(String motherId, LocalDate referenceDate, String scheduleName, LocalTime callTime) {
