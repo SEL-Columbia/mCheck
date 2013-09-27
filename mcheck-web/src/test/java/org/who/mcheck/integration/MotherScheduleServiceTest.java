@@ -83,6 +83,7 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldEnrollMotherToDay2ScheduleOnTheNextDayOfRegistrationWhenRegistrationDateAndDeliveryDateAreSame() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2013-01-01"));
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
@@ -94,6 +95,7 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldEnrollMotherToDay2ScheduleOnTheNextDayOfRegistrationWhenRegistrationDateIsOneDayAfterDeliveryDate() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2013-01-02"));
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("afternoon")).thenReturn(LocalTime.parse("14:30:00"));
 
@@ -105,6 +107,7 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldEnrollMotherToDay4ScheduleOnTheNextDayOfRegistrationWhenRegistrationDateIsTwoDaysAfterDeliveryDate() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2013-01-03"));
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
@@ -149,7 +152,7 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldNotEnrollMotherIfRegistrationDateIsNotToday() throws Exception {
-        DateUtil.fakeIt(LocalDate.parse("2013-01-01"));
+        DateUtil.fakeIt(LocalDate.parse("2013-01-10"));
 
         service.enroll("id", parse("2013-01-02"), parse("2013-01-01"), "morning");
 

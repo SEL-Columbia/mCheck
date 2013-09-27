@@ -35,7 +35,7 @@ public class MotherScheduleService {
     }
 
     public void enroll(String motherId, LocalDate registrationDate, LocalDate deliveryDate, String dailyCallPreference) {
-        if (DateUtil.today().isBefore(registrationDate)) {
+        if (DateUtil.today().isAfter(registrationDate)) {
             log.info(MessageFormat.format("Not making any calls for mother: {0} as registration date: {1} is in the past, today: {2}.",
                     motherId, registrationDate, DateUtil.today()));
             return;
