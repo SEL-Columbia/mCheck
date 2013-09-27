@@ -1,0 +1,23 @@
+{
+    "name": "Post Delivery Danger Signs - Day 4",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "Day4",
+            "scheduleWindows": {
+                "earliest": ["1 Day"],
+                "due": ["1 Day"],
+                "late": ["1 Day"],
+                "max": ["1 Day"]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }
+            ]
+        }
+    ]
+}

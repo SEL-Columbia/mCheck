@@ -50,45 +50,94 @@ public class MCheckSchedulesIntegrationTest extends BaseUnitTest {
     private String schedulesDirectory;
 
     @Test
-    public void shouldProvideAlertsForPNCAtTheRightTimes() throws Exception {
-        schedule.enrollFor("Post Delivery Danger Signs", newDate(2012, JANUARY, 1), new Time(14, 0));
+    public void shouldProvideAlertsForPostDeliveryDangerSignsDay1AtTheRightTimes() throws Exception {
+        schedule.enrollFor("Post Delivery Danger Signs - Day 1",
+                newDate(2012, JANUARY, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("Day1", earliest);
         schedule.assertAlertsStartWith("Day1", due, date(1, JANUARY));
         schedule.assertNoAlerts("Day1", late);
         schedule.assertNoAlerts("Day1", max);
 
+        visualization.outputTo("post-pregnancy-danger-signs-day-1.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForPostDeliveryDangerSignsDay2AtTheRightTimes() throws Exception {
+        schedule.enrollFor("Post Delivery Danger Signs - Day 2",
+                newDate(2012, JANUARY, 1), new Time(14, 0));
+
         schedule.assertNoAlerts("Day2", earliest);
-        schedule.assertAlertsStartWith("Day2", due, date(2, JANUARY));
+        schedule.assertAlertsStartWith("Day2", due, date(1, JANUARY));
         schedule.assertNoAlerts("Day2", late);
         schedule.assertNoAlerts("Day2", max);
 
+        visualization.outputTo("post-pregnancy-danger-signs-day-2.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForPostDeliveryDangerSignsDay3AtTheRightTimes() throws Exception {
+        schedule.enrollFor("Post Delivery Danger Signs - Day 3",
+                newDate(2012, JANUARY, 1), new Time(14, 0));
+
         schedule.assertNoAlerts("Day3", earliest);
-        schedule.assertAlertsStartWith("Day3", due, date(3, JANUARY));
+        schedule.assertAlertsStartWith("Day3", due, date(1, JANUARY));
         schedule.assertNoAlerts("Day3", late);
         schedule.assertNoAlerts("Day3", max);
 
+        visualization.outputTo("post-pregnancy-danger-signs-day-3.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForPostDeliveryDangerSignsDay4AtTheRightTimes() throws Exception {
+        schedule.enrollFor("Post Delivery Danger Signs - Day 4",
+                newDate(2012, JANUARY, 1), new Time(14, 0));
+
         schedule.assertNoAlerts("Day4", earliest);
-        schedule.assertAlertsStartWith("Day4", due, date(4, JANUARY));
+        schedule.assertAlertsStartWith("Day4", due, date(1, JANUARY));
         schedule.assertNoAlerts("Day4", late);
         schedule.assertNoAlerts("Day4", max);
 
+        visualization.outputTo("post-pregnancy-danger-signs-day-4.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForPostDeliveryDangerSignsDay5AtTheRightTimes() throws Exception {
+        schedule.enrollFor("Post Delivery Danger Signs - Day 5",
+                newDate(2012, JANUARY, 1), new Time(14, 0));
+
         schedule.assertNoAlerts("Day5", earliest);
-        schedule.assertAlertsStartWith("Day5", due, date(5, JANUARY));
+        schedule.assertAlertsStartWith("Day5", due, date(1, JANUARY));
         schedule.assertNoAlerts("Day5", late);
         schedule.assertNoAlerts("Day5", max);
 
+        visualization.outputTo("post-pregnancy-danger-signs-day-5.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForPostDeliveryDangerSignsDay6AtTheRightTimes() throws Exception {
+        schedule.enrollFor("Post Delivery Danger Signs - Day 6",
+                newDate(2012, JANUARY, 1), new Time(14, 0));
+
         schedule.assertNoAlerts("Day6", earliest);
-        schedule.assertAlertsStartWith("Day6", due, date(6, JANUARY));
+        schedule.assertAlertsStartWith("Day6", due, date(1, JANUARY));
         schedule.assertNoAlerts("Day6", late);
         schedule.assertNoAlerts("Day6", max);
 
+        visualization.outputTo("post-pregnancy-danger-signs-day-6.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForPostDeliveryDangerSignsDay7AtTheRightTimes() throws Exception {
+        schedule.enrollFor("Post Delivery Danger Signs - Day 7",
+                newDate(2012, JANUARY, 1), new Time(14, 0));
+
         schedule.assertNoAlerts("Day7", earliest);
-        schedule.assertAlertsStartWith("Day7", due, date(7, JANUARY));
+        schedule.assertAlertsStartWith("Day7", due, date(1, JANUARY));
         schedule.assertNoAlerts("Day7", late);
         schedule.assertNoAlerts("Day7", max);
 
-        visualization.outputTo("post-pregnancy-danger-signs.html", 1);
+        visualization.outputTo("post-pregnancy-danger-signs-day-7.html", 1);
     }
 
     @Before
