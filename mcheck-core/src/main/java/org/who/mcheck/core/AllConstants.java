@@ -8,6 +8,7 @@ public class AllConstants {
         public static final String POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME_PREFIX = "Post Delivery Danger Signs";
         public static final String MORNING = "morning";
         public static final String POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE = "Post Delivery Danger Signs - Day {0}";
+        public static final int LAST_DAY_OF_POST_DELIVERY_DANGER_SIGNS_SCHEDULE = 7;
     }
 
 }

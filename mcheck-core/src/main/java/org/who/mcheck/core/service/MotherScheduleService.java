@@ -35,21 +35,32 @@ public class MotherScheduleService {
 
     public void enroll(String motherId, LocalDate registrationDate, LocalDate deliveryDate, String dailyCallPreference) {
         int firstSchedule = enrollMotherToFirstDaySchedule(motherId, registrationDate, deliveryDate);
-        enrollMotherToSecondDaySchedule(motherId, registrationDate, dailyCallPreference, firstSchedule);
+        enrollMotherToSecondDaySchedule(motherId, registrationDate, dailyCallPreference, firstSchedule, deliveryDate);
     }
 
     private int enrollMotherToFirstDaySchedule(String motherId, LocalDate registrationDate, LocalDate deliveryDate) {
         Period periodBetweenDeliveryAndRegistration = new Period(deliveryDate, registrationDate);
-        int firstSchedule = periodBetweenDeliveryAndRegistration.getDays() < 2
+        int firstSchedule = periodBetweenDeliveryAndRegistration.toStandardDays().getDays() < 2
                 ? 1
-                : periodBetweenDeliveryAndRegistration.getDays() + 1;
+                : periodBetweenDeliveryAndRegistration.toStandardDays().getDays() + 1;
+        if (firstSchedule > AllConstants.Schedule.LAST_DAY_OF_POST_DELIVERY_DANGER_SIGNS_SCHEDULE) {
+            log.info(MessageFormat.format("Not making first day call as the registration date: {0} is {1} days past delivery date: {2}.",
+                    registrationDate, firstSchedule, deliveryDate));
+            return firstSchedule;
+        }
         String firstScheduleName = MessageFormat.format(AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, firstSchedule);
         LocalTime firstCallTime = DateUtil.now().plusMinutes(firstCallDelay);
         enrollToSchedule(motherId, registrationDate, firstScheduleName, firstCallTime);
         return firstSchedule;
     }
 
-    private void enrollMotherToSecondDaySchedule(String motherId, LocalDate registrationDate, String dailyCallPreference, int firstSchedule) {
+    private void enrollMotherToSecondDaySchedule(String motherId, LocalDate registrationDate, String dailyCallPreference, int firstSchedule, LocalDate deliveryDate) {
+        if (firstSchedule >= AllConstants.Schedule.LAST_DAY_OF_POST_DELIVERY_DANGER_SIGNS_SCHEDULE) {
+            log.info(MessageFormat.format("Not enrolling mother to subsequent calls as the registration date: {0} is {1} days past delivery date: {2}.",
+                    registrationDate, firstSchedule, deliveryDate));
+            return;
+        }
+
         String secondScheduleName = MessageFormat.format(AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, firstSchedule + 1);
         LocalDate secondScheduleReferenceDate = registrationDate.plusDays(1);
         enrollToSchedule(motherId, secondScheduleReferenceDate, secondScheduleName, preferredCallTimeService.getPreferredCallTime(dailyCallPreference));

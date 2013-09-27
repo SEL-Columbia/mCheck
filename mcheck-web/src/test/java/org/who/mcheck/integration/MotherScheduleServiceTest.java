@@ -15,8 +15,7 @@ import org.who.mcheck.core.util.DateUtil;
 
 import static org.joda.time.LocalDate.parse;
 import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class MotherScheduleServiceTest {
@@ -119,6 +118,27 @@ public class MotherScheduleServiceTest {
 
         verify(scheduleTrackingService)
                 .enroll(enrollmentFor("id", "Post Delivery Danger Signs - Day 5", parse("2013-01-05"), new Time(9, 30)));
+    }
+
+    @Test
+    public void shouldNotEnrollMotherToAnyScheduleWhenRegistrationDateIsSevenDaysAfterDeliveryDate() throws Exception {
+        DateUtil.fakeTime(new LocalTime(9, 0));
+        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+
+        service.enroll("id", parse("2013-01-08"), parse("2013-01-01"), "morning");
+
+        verifyZeroInteractions(scheduleTrackingService);
+    }
+
+    @Test
+    public void shouldNotEnrollMotherToSecondScheduleWhenRegistrationDateIsSixDaysAfterDeliveryDate() throws Exception {
+        DateUtil.fakeTime(new LocalTime(9, 0));
+
+        service.enroll("id", parse("2013-01-07"), parse("2013-01-01"), "morning");
+
+        verify(scheduleTrackingService)
+                .enroll(enrollmentFor("id", "Post Delivery Danger Signs - Day 7", parse("2013-01-07"), new Time(9, 5)));
+        verifyNoMoreInteractions(scheduleTrackingService);
     }
 
     private EnrollmentRequest enrollmentFor(final String externalId, final String scheduleName,
