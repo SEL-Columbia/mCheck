@@ -63,6 +63,10 @@ public class ReminderService {
                 String.valueOf(dayWithReferenceToRegistrationDate.charAt(dayWithReferenceToRegistrationDate.length() - 1)),
                 0) + 1;
 
+        if (nextCall > AllConstants.Schedule.LAST_DAY_OF_POST_DELIVERY_DANGER_SIGNS_SCHEDULE) {
+            log.info("Not enrolling mother to subsequent calls as the current call is the last call.");
+            return;
+        }
         enrollToSchedule(motherId,
                 today.plusDays(1),
                 MessageFormat.format(AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, nextCall),

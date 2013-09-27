@@ -87,6 +87,19 @@ public class ReminderServiceTest {
     }
 
     @Test
+    public void shouldNotEnrollMotherToNextDayScheduleWhenTheCurrentReminderIsTheLast() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2012-01-01"));
+        Mother mother = new Mother("id", "Anamika", "Arun", "caseId",
+                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
+        when(allMothers.get("mother id")).thenReturn(mother);
+
+        reminderService.remindMother("mother id", "Post Delivery Danger Signs - Day 7", "Day7");
+
+        verify(scheduleTrackingService).fulfillCurrentMilestone("mother id", "Post Delivery Danger Signs - Day 7", LocalDate.parse("2012-01-01"));
+        verifyNoMoreInteractions(scheduleTrackingService);
+    }
+
+    @Test
     public void shouldNotInitiateACallToRemindMotherWhenMotherNotFound() throws Exception {
         when(allMothers.get("mother id")).thenReturn(null);
 
