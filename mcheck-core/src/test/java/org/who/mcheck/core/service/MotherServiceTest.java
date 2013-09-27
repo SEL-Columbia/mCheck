@@ -11,6 +11,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
+import static org.joda.time.LocalDate.parse;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -42,11 +43,11 @@ public class MotherServiceTest {
     @Test
     public void shouldEnrollMotherToSchedulesWhenSheIsRegistered() throws Exception {
         MotherRegistrationRequest request = new MotherRegistrationRequest("id", "Anamika", "Arun", "caseId",
-                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
+                "2013-01-01", "2013-02-01", "1234567890", "morning", "instanceId", "2013-02-01");
 
         service.registerMother(request);
 
-        verify(scheduleService).enroll(null, "2013-01-01", "morning");
+        verify(scheduleService).enroll(null, parse("2013-02-01"), parse("2013-01-01"), "morning");
     }
 
     @Test

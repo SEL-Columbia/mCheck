@@ -8,6 +8,8 @@ import org.who.mcheck.core.repository.AllMothers;
 
 import java.util.List;
 
+import static org.joda.time.LocalDate.parse;
+
 @Service
 public class MotherService {
     private final AllMothers allMothers;
@@ -33,7 +35,7 @@ public class MotherService {
                 request.submissionDate()
         );
         allMothers.register(mother);
-        scheduleService.enroll(mother.getId(), mother.registrationDate(), request.dailyCallPreference());
+        scheduleService.enroll(mother.getId(), parse(mother.registrationDate()), parse(request.dateOfDelivery()), request.dailyCallPreference());
     }
 
     public List<Mother> fetchAll() {

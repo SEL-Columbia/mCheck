@@ -14,6 +14,10 @@ public class DateUtil {
         dateUtility = new MockDate(fakeDayAsToday);
     }
 
+    public static void fakeTime(LocalTime fakeTime) {
+        dateUtility = new MockDate(fakeTime);
+    }
+
     public static LocalDate today() {
         return dateUtility.today();
     }
@@ -37,10 +41,16 @@ public class DateUtil {
             return defaultValue;
         }
     }
+
+    public static LocalTime now() {
+        return dateUtility.now();
+    }
 }
 
 interface DateUtility {
     LocalDate today();
+
+    LocalTime now();
 
     long millis();
 }
@@ -52,6 +62,11 @@ class RealDate implements DateUtility {
     }
 
     @Override
+    public LocalTime now() {
+        return LocalTime.now();
+    }
+
+    @Override
     public long millis() {
         return DateTime.now().getMillis();
     }
@@ -59,14 +74,24 @@ class RealDate implements DateUtility {
 
 class MockDate implements DateUtility {
     private DateTime fakeDay;
+    private LocalTime fakeTime;
 
     MockDate(LocalDate fakeDay) {
         this.fakeDay = fakeDay.toDateTimeAtStartOfDay();
     }
 
+    public MockDate(LocalTime fakeTime) {
+        this.fakeTime = fakeTime;
+    }
+
     @Override
     public LocalDate today() {
         return fakeDay.toLocalDate();
+    }
+
+    @Override
+    public LocalTime now() {
+        return fakeTime;
     }
 
     @Override
