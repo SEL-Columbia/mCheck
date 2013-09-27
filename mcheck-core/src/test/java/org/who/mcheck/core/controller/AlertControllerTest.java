@@ -39,7 +39,7 @@ public class AlertControllerTest {
 
         controller.handleEvent(event);
 
-        verify(reminderService).remindMother("mother id", "Day 2");
+        verify(reminderService).remindMother("mother id", "Post Delivery Danger Signs - Day 1", "Day 2");
     }
 
     @Test

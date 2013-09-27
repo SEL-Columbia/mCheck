@@ -31,6 +31,6 @@ public class AlertController implements AlertHandler {
             return;
         }
 
-        reminderService.remindMother(event.getExternalId(), event.getMilestoneAlert().getMilestoneName());
+        reminderService.remindMother(event.getExternalId(), event.getScheduleName(), event.getMilestoneAlert().getMilestoneName());
     }
 }
