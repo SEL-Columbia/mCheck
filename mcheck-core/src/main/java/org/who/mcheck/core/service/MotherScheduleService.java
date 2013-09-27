@@ -19,8 +19,6 @@ import java.text.MessageFormat;
 
 @Service
 public class MotherScheduleService {
-    private static final int DEFAULT_FIRST_CALL_DELAY_IN_MINUTES = 5;
-    private static final String POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE = "Post Delivery Danger Signs - Day {0}";
     private final Log log = LogFactory.getLog(MotherScheduleService.class);
     private final int firstCallDelay;
     private ScheduleTrackingService scheduleTrackingService;
@@ -35,7 +33,7 @@ public class MotherScheduleService {
         this.scheduleTrackingService = scheduleTrackingService;
         this.preferredCallTimeInMorning = preferredCallTimeInMorning;
         this.preferredCallTimeInAfternoon = preferredCallTimeInAfternoon;
-        this.firstCallDelay = IntegerUtil.tryParse(firstCallDelay, DEFAULT_FIRST_CALL_DELAY_IN_MINUTES);
+        this.firstCallDelay = IntegerUtil.tryParse(firstCallDelay, AllConstants.DEFAULT_FIRST_CALL_DELAY_IN_MINUTES);
     }
 
     public void enroll(String motherId, LocalDate registrationDate, LocalDate deliveryDate, String dailyCallPreference) {
@@ -48,7 +46,7 @@ public class MotherScheduleService {
         int firstSchedule = periodBetweenDeliveryAndRegistration.getDays() < 2
                 ? 1
                 : periodBetweenDeliveryAndRegistration.getDays() + 1;
-        String firstScheduleName = MessageFormat.format(POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, firstSchedule);
+        String firstScheduleName = MessageFormat.format(AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, firstSchedule);
         LocalTime firstCallTime = DateUtil.now().plusMinutes(firstCallDelay);
         enrollToSchedule(motherId, registrationDate, firstScheduleName, firstCallTime);
         return firstSchedule;
@@ -59,7 +57,7 @@ public class MotherScheduleService {
                 AllConstants.Schedule.MORNING.equalsIgnoreCase(dailyCallPreference)
                         ? preferredCallTimeInMorning
                         : preferredCallTimeInAfternoon;
-        String secondScheduleName = MessageFormat.format(POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, firstSchedule + 1);
+        String secondScheduleName = MessageFormat.format(AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, firstSchedule + 1);
         LocalDate secondScheduleReferenceDate = registrationDate.plusDays(1);
         enrollToSchedule(motherId, secondScheduleReferenceDate, secondScheduleName, LocalTime.parse(secondCallTime));
     }

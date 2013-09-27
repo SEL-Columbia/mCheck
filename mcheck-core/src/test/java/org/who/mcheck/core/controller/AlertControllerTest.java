@@ -35,7 +35,7 @@ public class AlertControllerTest {
 
     @Test
     public void shouldDelegateAlertHandlingToReminderService() throws Exception {
-        MilestoneEvent event = getMilestoneEvent("mother id", "Post Delivery Danger Signs", "Day 2");
+        MilestoneEvent event = getMilestoneEvent("mother id", "Post Delivery Danger Signs - Day 1", "Day 2");
 
         controller.handleEvent(event);
 
