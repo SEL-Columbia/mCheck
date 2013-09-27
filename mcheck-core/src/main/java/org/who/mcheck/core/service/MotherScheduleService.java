@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.who.mcheck.core.AllConstants;
 import org.who.mcheck.core.util.DateUtil;
 import org.who.mcheck.core.util.IntegerUtil;
+import org.who.mcheck.core.util.LocalTimeUtil;
 
 import java.text.MessageFormat;
 
@@ -34,6 +35,11 @@ public class MotherScheduleService {
     }
 
     public void enroll(String motherId, LocalDate registrationDate, LocalDate deliveryDate, String dailyCallPreference) {
+        if (DateUtil.today().isBefore(registrationDate)) {
+            log.info(MessageFormat.format("Not making any calls for mother: {0} as registration date: {1} is in the past, today: {2}.",
+                    motherId, registrationDate, DateUtil.today()));
+            return;
+        }
         int firstSchedule = enrollMotherToFirstDaySchedule(motherId, registrationDate, deliveryDate);
         enrollMotherToSecondDaySchedule(motherId, registrationDate, dailyCallPreference, firstSchedule, deliveryDate);
     }
@@ -49,7 +55,7 @@ public class MotherScheduleService {
             return firstSchedule;
         }
         String firstScheduleName = MessageFormat.format(AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, firstSchedule);
-        LocalTime firstCallTime = DateUtil.now().plusMinutes(firstCallDelay);
+        LocalTime firstCallTime = LocalTimeUtil.now().plusMinutes(firstCallDelay);
         enrollToSchedule(motherId, registrationDate, firstScheduleName, firstCallTime);
         return firstSchedule;
     }

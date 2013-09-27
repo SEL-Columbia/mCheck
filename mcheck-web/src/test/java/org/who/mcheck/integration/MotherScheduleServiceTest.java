@@ -12,6 +12,7 @@ import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.who.mcheck.core.service.MotherScheduleService;
 import org.who.mcheck.core.service.PreferredCallTimeService;
 import org.who.mcheck.core.util.DateUtil;
+import org.who.mcheck.core.util.LocalTimeUtil;
 
 import static org.joda.time.LocalDate.parse;
 import static org.mockito.Matchers.argThat;
@@ -34,7 +35,8 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldEnrollMotherWithFirstScheduleAsDay1ScheduleWhenRegistrationDateAndDeliveryDateAreSame() throws Exception {
-        DateUtil.fakeTime(new LocalTime(9, 0));
+        DateUtil.fakeIt(LocalDate.parse("2013-01-01"));
+        LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-01"), parse("2013-01-01"), "morning");
@@ -45,7 +47,8 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldEnrollMotherWithFirstScheduleAsDay1ScheduleWhenRegistrationDateIsOneDayAfterDeliveryDate() throws Exception {
-        DateUtil.fakeTime(new LocalTime(9, 0));
+        DateUtil.fakeIt(LocalDate.parse("2013-01-02"));
+        LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-02"), parse("2013-01-01"), "morning");
@@ -56,7 +59,8 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldEnrollMotherWithFirstScheduleAsDay3ScheduleWhenRegistrationDateIsTwoDaysAfterDeliveryDate() throws Exception {
-        DateUtil.fakeTime(new LocalTime(9, 0));
+        DateUtil.fakeIt(LocalDate.parse("2013-01-03"));
+        LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-03"), parse("2013-01-01"), "morning");
@@ -67,7 +71,8 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldEnrollMotherWithFirstScheduleAsDay4ScheduleWhenRegistrationDateIsThreeDaysAfterDeliveryDate() throws Exception {
-        DateUtil.fakeTime(new LocalTime(9, 0));
+        DateUtil.fakeIt(LocalDate.parse("2013-01-04"));
+        LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-04"), parse("2013-01-01"), "morning");
@@ -78,7 +83,7 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldEnrollMotherToDay2ScheduleOnTheNextDayOfRegistrationWhenRegistrationDateAndDeliveryDateAreSame() throws Exception {
-        DateUtil.fakeTime(new LocalTime(9, 0));
+        LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-01"), parse("2013-01-01"), "morning");
@@ -89,7 +94,7 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldEnrollMotherToDay2ScheduleOnTheNextDayOfRegistrationWhenRegistrationDateIsOneDayAfterDeliveryDate() throws Exception {
-        DateUtil.fakeTime(new LocalTime(9, 0));
+        LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("afternoon")).thenReturn(LocalTime.parse("14:30:00"));
 
         service.enroll("id", parse("2013-01-02"), parse("2013-01-01"), "afternoon");
@@ -100,7 +105,7 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldEnrollMotherToDay4ScheduleOnTheNextDayOfRegistrationWhenRegistrationDateIsTwoDaysAfterDeliveryDate() throws Exception {
-        DateUtil.fakeTime(new LocalTime(9, 0));
+        LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-03"), parse("2013-01-01"), "morning");
@@ -111,7 +116,7 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldEnrollMotherToDay5ScheduleOnTheNextDayOfRegistrationWhenRegistrationDateIsThreeDaysAfterDeliveryDate() throws Exception {
-        DateUtil.fakeTime(new LocalTime(9, 0));
+        LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-04"), parse("2013-01-01"), "morning");
@@ -122,7 +127,7 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldNotEnrollMotherToAnyScheduleWhenRegistrationDateIsSevenDaysAfterDeliveryDate() throws Exception {
-        DateUtil.fakeTime(new LocalTime(9, 0));
+        LocalTimeUtil.fakeIt(new LocalTime(9, 0));
         when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-08"), parse("2013-01-01"), "morning");
@@ -132,13 +137,23 @@ public class MotherScheduleServiceTest {
 
     @Test
     public void shouldNotEnrollMotherToSecondScheduleWhenRegistrationDateIsSixDaysAfterDeliveryDate() throws Exception {
-        DateUtil.fakeTime(new LocalTime(9, 0));
+        DateUtil.fakeIt(LocalDate.parse("2013-01-07"));
+        LocalTimeUtil.fakeIt(new LocalTime(9, 0));
 
         service.enroll("id", parse("2013-01-07"), parse("2013-01-01"), "morning");
 
         verify(scheduleTrackingService)
                 .enroll(enrollmentFor("id", "Post Delivery Danger Signs - Day 7", parse("2013-01-07"), new Time(9, 5)));
         verifyNoMoreInteractions(scheduleTrackingService);
+    }
+
+    @Test
+    public void shouldNotEnrollMotherIfRegistrationDateIsNotToday() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2013-01-01"));
+
+        service.enroll("id", parse("2013-01-02"), parse("2013-01-01"), "morning");
+
+        verifyZeroInteractions(scheduleTrackingService);
     }
 
     private EnrollmentRequest enrollmentFor(final String externalId, final String scheduleName,

@@ -2,10 +2,6 @@ package org.who.mcheck.core.util;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.Period;
-
-import static org.motechproject.util.DateUtil.inRange;
 
 public class DateUtil {
     private static DateUtility dateUtility = new RealDate();
@@ -14,45 +10,14 @@ public class DateUtil {
         dateUtility = new MockDate(fakeDayAsToday);
     }
 
-    public static void fakeTime(LocalTime fakeTime) {
-        dateUtility = new MockDate(fakeTime);
-    }
-
     public static LocalDate today() {
         return dateUtility.today();
     }
 
-    public static long millis() {
-        return dateUtility.millis();
-    }
-
-    public static boolean isDateWithinGivenPeriodBeforeToday(LocalDate referenceDateForSchedule, Period period) {
-        return inRange(toTime(referenceDateForSchedule), toTime(today().minus(period)), toTime(today()));
-    }
-
-    private static DateTime toTime(LocalDate referenceDateForSchedule) {
-        return referenceDateForSchedule.toDateTime(new LocalTime(0, 0));
-    }
-
-    public static LocalDate tryParse(String value, LocalDate defaultValue) {
-        try {
-            return LocalDate.parse(value);
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
-    public static LocalTime now() {
-        return dateUtility.now();
-    }
 }
 
 interface DateUtility {
     LocalDate today();
-
-    LocalTime now();
-
-    long millis();
 }
 
 class RealDate implements DateUtility {
@@ -60,43 +25,18 @@ class RealDate implements DateUtility {
     public LocalDate today() {
         return LocalDate.now();
     }
-
-    @Override
-    public LocalTime now() {
-        return LocalTime.now();
-    }
-
-    @Override
-    public long millis() {
-        return DateTime.now().getMillis();
-    }
 }
 
 class MockDate implements DateUtility {
     private DateTime fakeDay;
-    private LocalTime fakeTime;
 
     MockDate(LocalDate fakeDay) {
         this.fakeDay = fakeDay.toDateTimeAtStartOfDay();
     }
 
-    public MockDate(LocalTime fakeTime) {
-        this.fakeTime = fakeTime;
-    }
-
     @Override
     public LocalDate today() {
         return fakeDay.toLocalDate();
-    }
-
-    @Override
-    public LocalTime now() {
-        return fakeTime;
-    }
-
-    @Override
-    public long millis() {
-        return fakeDay.getMillis();
     }
 }
 
