@@ -1,5 +1,6 @@
 package org.who.mcheck.core.repository.it;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,11 @@ public class AllCallStatusTokensTest {
     @Autowired
     private AllCallStatusTokens allCallStatusTokens;
 
+    @Before
+    public void setUp() throws Exception {
+        allCallStatusTokens.removeAll();
+    }
+
     @Test
     public void shouldFindCallStatusByPhoneNumber() throws Exception {
         CallStatusToken expectedTokenForPhone1 = new CallStatusToken("phone 1", CallStatus.Unsuccessful);
@@ -30,5 +36,23 @@ public class AllCallStatusTokensTest {
 
         CallStatusToken tokenForPhone2 = allCallStatusTokens.findByContactNumber("phone 2");
         assertEquals(expectedTokenForPhone2, tokenForPhone2);
+    }
+
+    @Test
+    public void shouldUpdateCallStatusByPhoneNumber() throws Exception {
+        allCallStatusTokens.add(new CallStatusToken("phone 1", CallStatus.Unsuccessful));
+
+        allCallStatusTokens.createOrReplaceByPhoneNumber(new CallStatusToken("phone 1", CallStatus.Successful));
+
+        CallStatusToken updatedToken = allCallStatusTokens.findByContactNumber("phone 1");
+        assertEquals(new CallStatusToken("phone 1", CallStatus.Successful), updatedToken);
+    }
+
+    @Test
+    public void shouldCreateCallStatusWhenItDoesNotExistByPhoneNumber() throws Exception {
+        allCallStatusTokens.createOrReplaceByPhoneNumber(new CallStatusToken("phone 1", CallStatus.Successful));
+
+        CallStatusToken createdToken = allCallStatusTokens.findByContactNumber("phone 1");
+        assertEquals(new CallStatusToken("phone 1", CallStatus.Successful), createdToken);
     }
 }

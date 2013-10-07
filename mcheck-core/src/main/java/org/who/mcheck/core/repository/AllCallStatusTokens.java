@@ -27,4 +27,12 @@ public class AllCallStatusTokens extends MotechBaseRepository<CallStatusToken> {
         }
         return tokens.get(0);
     }
+
+    public void createOrReplaceByPhoneNumber(CallStatusToken callStatusToken) {
+        CallStatusToken token = findByContactNumber(callStatusToken.contactNumber());
+        if (token != null) {
+            remove(token);
+        }
+        add(callStatusToken);
+    }
 }

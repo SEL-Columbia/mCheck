@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.who.mcheck.core.AllConstants;
+import org.who.mcheck.core.domain.CallStatus;
+import org.who.mcheck.core.domain.CallStatusToken;
 import org.who.mcheck.core.domain.Mother;
+import org.who.mcheck.core.repository.AllCallStatusTokens;
 import org.who.mcheck.core.repository.AllMothers;
 import org.who.mcheck.core.util.DateUtil;
 import org.who.mcheck.core.util.IntegerUtil;
@@ -25,6 +28,7 @@ import java.util.HashMap;
 public class ReminderService {
 
     private final AllMothers allMothers;
+    private AllCallStatusTokens allCallStatusTokens;
     private final IVRService ivrService;
     private final ScheduleTrackingService scheduleTrackingService;
     private final String callbackUrl;
@@ -33,11 +37,13 @@ public class ReminderService {
 
     @Autowired
     public ReminderService(AllMothers allMothers,
+                           AllCallStatusTokens allCallStatusTokens,
                            IVRService ivrService,
                            ScheduleTrackingService scheduleTrackingService,
                            @Value("#{mCheck['ivr.callback.url']}") String callbackUrl,
                            PreferredCallTimeService preferredCallTimeService) {
         this.allMothers = allMothers;
+        this.allCallStatusTokens = allCallStatusTokens;
         this.ivrService = ivrService;
         this.scheduleTrackingService = scheduleTrackingService;
         this.callbackUrl = callbackUrl;
@@ -51,8 +57,16 @@ public class ReminderService {
             return;
         }
 
+        setupRetryIfCallIsUnsuccessful(dayWithReferenceToRegistrationDate, mother);
         makeTodaysCall(dayWithReferenceToRegistrationDate, mother);
         scheduleTomorrowsCall(motherId, scheduleName, dayWithReferenceToRegistrationDate, mother);
+    }
+
+    private void setupRetryIfCallIsUnsuccessful(String dayWithReferenceToRegistrationDate, Mother mother) {
+        allCallStatusTokens.createOrReplaceByPhoneNumber(new CallStatusToken(mother.contactNumber(),
+                CallStatus.Unsuccessful)
+                .withDaySinceDelivery(dayWithReferenceToRegistrationDate)
+                .withCallAttemptNumber(1));
     }
 
     private void scheduleTomorrowsCall(String motherId, String scheduleName, String dayWithReferenceToRegistrationDate, Mother mother) {

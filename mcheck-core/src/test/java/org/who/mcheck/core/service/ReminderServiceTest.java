@@ -11,7 +11,10 @@ import org.motechproject.ivr.service.IVRService;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.who.mcheck.core.domain.CallStatus;
+import org.who.mcheck.core.domain.CallStatusToken;
 import org.who.mcheck.core.domain.Mother;
+import org.who.mcheck.core.repository.AllCallStatusTokens;
 import org.who.mcheck.core.repository.AllMothers;
 import org.who.mcheck.core.util.DateUtil;
 
@@ -23,6 +26,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class ReminderServiceTest {
     @Mock
     private AllMothers allMothers;
+    @Mock
+    private AllCallStatusTokens allCallStatusTokens;
     @Mock
     private IVRService ivrService;
     @Mock
@@ -36,7 +41,7 @@ public class ReminderServiceTest {
         initMocks(this);
         reminderService = new ReminderService(
                 allMothers,
-                ivrService,
+                allCallStatusTokens, ivrService,
                 scheduleTrackingService,
                 "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-{0}&trP=Lw&ln=en",
                 preferredCallTimeService);
@@ -52,6 +57,21 @@ public class ReminderServiceTest {
         reminderService.remindMother("mother id", "Post Delivery Danger Signs - Day 4", "Day4");
 
         verify(ivrService).initiateCall(assertCallRequest(mother.contactNumber(), "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-Day4&trP=Lw&ln=en"));
+    }
+
+    @Test
+    public void shouldCreateACallStatusToken() throws Exception {
+        Mother mother = new Mother("id", "Anamika", "Arun", "caseId",
+                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
+        when(allMothers.get("mother id")).thenReturn(mother);
+        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+
+        reminderService.remindMother("mother id", "Post Delivery Danger Signs - Day 4", "Day4");
+
+        verify(allCallStatusTokens).createOrReplaceByPhoneNumber(
+                new CallStatusToken("1234567890", CallStatus.Unsuccessful)
+                        .withDaySinceDelivery("Day4")
+                        .withCallAttemptNumber(1));
     }
 
     @Test
