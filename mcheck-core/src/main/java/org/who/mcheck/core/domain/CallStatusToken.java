@@ -27,14 +27,18 @@ public class CallStatusToken extends MotechBaseDataObject {
         this.callStatus = CallStatus.Successful;
     }
 
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o);
+        return EqualsBuilder.reflectionEquals(this, o, new String[]{"id"});
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return HashCodeBuilder.reflectionHashCode(this, new String[]{"id"});
     }
 
     @Override
