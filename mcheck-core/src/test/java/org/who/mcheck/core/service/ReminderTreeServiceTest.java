@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.motechproject.decisiontree.core.model.AudioPrompt;
+import org.motechproject.decisiontree.core.model.INodeOperation;
 import org.motechproject.decisiontree.core.model.Prompt;
 import org.motechproject.decisiontree.core.model.Tree;
 import org.motechproject.decisiontree.core.repository.AllTrees;
@@ -19,6 +20,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class ReminderTreeServiceTest {
     @Mock
     private AllTrees allTrees;
+    @Mock
+    private UpdateCallStatusTokenOperation updateCallStatusTokenOperation;
 
     @Before
     public void setUp() throws Exception {
@@ -27,7 +30,7 @@ public class ReminderTreeServiceTest {
 
     @Test
     public void shouldCreateCallTree() throws Exception {
-        ReminderTreeService service = new ReminderTreeService(allTrees, "mCheckTree-Day{0}", "http://server.com/PostPartum/Day{0}.mp3");
+        ReminderTreeService service = new ReminderTreeService(allTrees, updateCallStatusTokenOperation, "mCheckTree-Day{0}", "http://server.com/PostPartum/Day{0}.mp3");
 
         service.createMCheckIVRTrees();
 
@@ -47,9 +50,12 @@ public class ReminderTreeServiceTest {
             public boolean matches(Object o) {
                 Tree tree = (Tree) o;
                 List<Prompt> prompts = tree.getRootTransition().getDestinationNode(null, null).getPrompts();
+                List<INodeOperation> operations = tree.getRootTransition().getDestinationNode(null, null).getOperations();
                 return tree.getName().equals(name)
                         && prompts.size() == 1
-                        && audioFileURL.equals(((AudioPrompt) prompts.get(0)).getAudioFileUrl());
+                        && audioFileURL.equals(((AudioPrompt) prompts.get(0)).getAudioFileUrl()) &&
+                        operations.size() == 1
+                        && updateCallStatusTokenOperation.equals(operations.get(0));
             }
         });
     }
