@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
 import org.motechproject.model.Time;
+import org.motechproject.scheduler.MotechSchedulerService;
+import org.motechproject.scheduler.domain.RunOnceSchedulableJob;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.who.mcheck.core.domain.CallStatus;
@@ -17,6 +19,7 @@ import org.who.mcheck.core.domain.Mother;
 import org.who.mcheck.core.repository.AllCallStatusTokens;
 import org.who.mcheck.core.repository.AllMothers;
 import org.who.mcheck.core.util.DateUtil;
+import org.who.mcheck.core.util.LocalTimeUtil;
 
 import static org.joda.time.LocalDate.parse;
 import static org.mockito.Matchers.argThat;
@@ -33,6 +36,8 @@ public class ReminderServiceTest {
     @Mock
     private ScheduleTrackingService scheduleTrackingService;
     @Mock
+    private MotechSchedulerService motechSchedulerService;
+    @Mock
     private PreferredCallTimeService preferredCallTimeService;
     private ReminderService reminderService;
 
@@ -43,7 +48,9 @@ public class ReminderServiceTest {
                 allMothers,
                 allCallStatusTokens, ivrService,
                 scheduleTrackingService,
+                motechSchedulerService,
                 "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-{0}&trP=Lw&ln=en",
+                "5",
                 preferredCallTimeService);
     }
 
@@ -57,21 +64,6 @@ public class ReminderServiceTest {
         reminderService.remindMother("mother id", "Post Delivery Danger Signs - Day 4", "Day4");
 
         verify(ivrService).initiateCall(assertCallRequest(mother.contactNumber(), "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-Day4&trP=Lw&ln=en"));
-    }
-
-    @Test
-    public void shouldCreateACallStatusToken() throws Exception {
-        Mother mother = new Mother("id", "Anamika", "Arun", "caseId",
-                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
-        when(allMothers.get("mother id")).thenReturn(mother);
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
-
-        reminderService.remindMother("mother id", "Post Delivery Danger Signs - Day 4", "Day4");
-
-        verify(allCallStatusTokens).createOrReplaceByPhoneNumber(
-                new CallStatusToken("1234567890", CallStatus.Unsuccessful)
-                        .withDaySinceDelivery("Day4")
-                        .withCallAttemptNumber(1));
     }
 
     @Test
@@ -127,6 +119,33 @@ public class ReminderServiceTest {
 
         verifyZeroInteractions(ivrService);
         verifyZeroInteractions(scheduleTrackingService);
+    }
+
+    @Test
+    public void shouldSetupRetryWhenCallIsMade() throws Exception {
+        LocalTimeUtil.fakeIt(new LocalTime(9, 0));
+        Mother mother = new Mother("id", "Anamika", "Arun", "caseId",
+                "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
+        when(allMothers.get("mother id")).thenReturn(mother);
+        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+
+        reminderService.remindMother("mother id", "Post Delivery Danger Signs - Day 4", "Day4");
+
+        verify(allCallStatusTokens).createOrReplaceByPhoneNumber(
+                new CallStatusToken("1234567890", CallStatus.Unsuccessful)
+                        .withDaySinceDelivery("Day4")
+                        .withCallAttemptNumber(1));
+        verify(motechSchedulerService).safeScheduleRunOnceJob(assertJob(new LocalTime(9, 5)));
+    }
+
+    private RunOnceSchedulableJob assertJob(final LocalTime retryTime) {
+        return argThat(new ArgumentMatcher<RunOnceSchedulableJob>() {
+            @Override
+            public boolean matches(Object o) {
+                RunOnceSchedulableJob job = (RunOnceSchedulableJob) o;
+                return retryTime.toDateTimeToday().toDate().equals(job.getStartDate()) && "RETRY-IVR-CALL-EVENT".equals(job.getMotechEvent().getSubject());
+            }
+        });
     }
 
     private EnrollmentRequest enrollmentFor(final String externalId, final String scheduleName,
