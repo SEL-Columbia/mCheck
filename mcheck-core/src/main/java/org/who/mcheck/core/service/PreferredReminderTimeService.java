@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 import org.who.mcheck.core.AllConstants;
 
 @Service
-public class PreferredCallTimeService {
+public class PreferredReminderTimeService {
 
     private final String preferredCallTimeInMorning;
     private final String preferredCallTimeInAfternoon;
 
     @Autowired
-    public PreferredCallTimeService(
+    public PreferredReminderTimeService(
             @Value("#{mCheck['ivr.preferred.call.time.morning']}") String preferredCallTimeInMorning,
             @Value("#{mCheck['ivr.preferred.call.time.afternoon']}") String preferredCallTimeInAfternoon) {
         this.preferredCallTimeInMorning = preferredCallTimeInMorning;

@@ -7,28 +7,28 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
-@TypeDiscriminator("doc.type === 'CallStatusToken'")
-public class CallStatusToken extends MotechBaseDataObject {
+@TypeDiscriminator("doc.type === 'ReminderStatusToken'")
+public class ReminderStatusToken extends MotechBaseDataObject {
 
     @JsonProperty
     private String contactNumber;
     @JsonProperty
-    private CallStatus callStatus;
+    private ReminderStatus reminderStatus;
     @JsonProperty
     private String daySinceDelivery;
     @JsonProperty
     private int attemptNumber;
 
-    private CallStatusToken() {
+    private ReminderStatusToken() {
     }
 
-    public CallStatusToken(String contactNumber, CallStatus callStatus) {
+    public ReminderStatusToken(String contactNumber, ReminderStatus reminderStatus) {
         this.contactNumber = contactNumber;
-        this.callStatus = callStatus;
+        this.reminderStatus = reminderStatus;
     }
 
     public void markCallStatusAsSuccessful() {
-        this.callStatus = CallStatus.Successful;
+        this.reminderStatus = ReminderStatus.Successful;
     }
 
     //Do not rename, this is needed by Couch view
@@ -36,12 +36,12 @@ public class CallStatusToken extends MotechBaseDataObject {
         return contactNumber;
     }
 
-    public CallStatusToken withDaySinceDelivery(String daySinceDelivery) {
+    public ReminderStatusToken withDaySinceDelivery(String daySinceDelivery) {
         this.daySinceDelivery = daySinceDelivery;
         return this;
     }
 
-    public CallStatusToken withCallAttemptNumber(int attemptNumber) {
+    public ReminderStatusToken withCallAttemptNumber(int attemptNumber) {
         this.attemptNumber = attemptNumber;
         return this;
     }
@@ -50,8 +50,8 @@ public class CallStatusToken extends MotechBaseDataObject {
         return contactNumber;
     }
 
-    public CallStatus callStatus() {
-        return callStatus;
+    public ReminderStatus callStatus() {
+        return reminderStatus;
     }
 
     public String daySinceDelivery() {

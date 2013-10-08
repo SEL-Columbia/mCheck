@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.who.mcheck.core.AllConstants;
-import org.who.mcheck.core.domain.CallStatus;
-import org.who.mcheck.core.domain.CallStatusToken;
-import org.who.mcheck.core.repository.AllCallStatusTokens;
+import org.who.mcheck.core.domain.ReminderStatus;
+import org.who.mcheck.core.domain.ReminderStatusToken;
+import org.who.mcheck.core.repository.AllReminderStatusTokens;
 import org.who.mcheck.core.service.RetryReminderService;
 import org.who.mcheck.core.util.IntegerUtil;
 
@@ -25,19 +25,19 @@ import static org.who.mcheck.core.AllConstants.BirthRegistrationFormFields.CONTA
 public class RetryReminderListener {
 
     private final Log log = LogFactory.getLog(RetryReminderListener.class);
-    private final AllCallStatusTokens allCallStatusTokens;
+    private final AllReminderStatusTokens allReminderStatusTokens;
     private final IVRService callService;
     private final String callbackUrl;
     private RetryReminderService retryReminderService;
     private final int maximumNumberOfRetries;
 
     @Autowired
-    public RetryReminderListener(AllCallStatusTokens allCallStatusTokens,
+    public RetryReminderListener(AllReminderStatusTokens allReminderStatusTokens,
                                  IVRService callService,
                                  RetryReminderService retryReminderService,
                                  @Value("#{mCheck['ivr.callback.url']}") String callbackUrl,
                                  @Value("#{mCheck['ivr.max.retries']}") String maximumNumberOfRetries) {
-        this.allCallStatusTokens = allCallStatusTokens;
+        this.allReminderStatusTokens = allReminderStatusTokens;
         this.callService = callService;
         this.retryReminderService = retryReminderService;
         this.callbackUrl = callbackUrl;
@@ -48,10 +48,10 @@ public class RetryReminderListener {
     public void retry(MotechEvent event) throws Exception {
         log.info(format("Got a retry call event: {0}", event));
 
-        CallStatusToken token = allCallStatusTokens.findByContactNumber(getParameter(event, CONTACT_NUMBER));
+        ReminderStatusToken token = allReminderStatusTokens.findByContactNumber(getParameter(event, CONTACT_NUMBER));
         log.info(format("Found a call status token: {0}", token));
 
-        if (CallStatus.Successful.equals(token.callStatus())) {
+        if (ReminderStatus.Successful.equals(token.callStatus())) {
             log.info(format("Not attempting a retry of call as the previous attempt was successful. CallStatusToken: {0}", token));
             return;
         }

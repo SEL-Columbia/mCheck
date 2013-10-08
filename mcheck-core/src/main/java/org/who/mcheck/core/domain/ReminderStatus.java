@@ -1,5 +1,5 @@
 package org.who.mcheck.core.domain;
 
-public enum CallStatus {
+public enum ReminderStatus {
     Successful, Unsuccessful;
 }

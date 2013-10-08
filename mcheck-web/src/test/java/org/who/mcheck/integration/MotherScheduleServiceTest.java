@@ -10,7 +10,7 @@ import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.who.mcheck.core.service.MotherScheduleService;
-import org.who.mcheck.core.service.PreferredCallTimeService;
+import org.who.mcheck.core.service.PreferredReminderTimeService;
 import org.who.mcheck.core.util.DateUtil;
 import org.who.mcheck.core.util.LocalTimeUtil;
 
@@ -23,21 +23,21 @@ public class MotherScheduleServiceTest {
     @Mock
     private ScheduleTrackingService scheduleTrackingService;
     @Mock
-    private PreferredCallTimeService preferredCallTimeService;
+    private PreferredReminderTimeService preferredReminderTimeService;
 
     private MotherScheduleService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new MotherScheduleService(scheduleTrackingService, "5", preferredCallTimeService);
+        service = new MotherScheduleService(scheduleTrackingService, "5", preferredReminderTimeService);
     }
 
     @Test
     public void shouldEnrollMotherWithFirstScheduleAsDay1ScheduleWhenRegistrationDateAndDeliveryDateAreSame() throws Exception {
         DateUtil.fakeIt(LocalDate.parse("2013-01-01"));
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-01"), parse("2013-01-01"), "morning");
 
@@ -49,7 +49,7 @@ public class MotherScheduleServiceTest {
     public void shouldEnrollMotherWithFirstScheduleAsDay1ScheduleWhenRegistrationDateIsOneDayAfterDeliveryDate() throws Exception {
         DateUtil.fakeIt(LocalDate.parse("2013-01-02"));
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-02"), parse("2013-01-01"), "morning");
 
@@ -61,7 +61,7 @@ public class MotherScheduleServiceTest {
     public void shouldEnrollMotherWithFirstScheduleAsDay3ScheduleWhenRegistrationDateIsTwoDaysAfterDeliveryDate() throws Exception {
         DateUtil.fakeIt(LocalDate.parse("2013-01-03"));
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-03"), parse("2013-01-01"), "morning");
 
@@ -73,7 +73,7 @@ public class MotherScheduleServiceTest {
     public void shouldEnrollMotherWithFirstScheduleAsDay4ScheduleWhenRegistrationDateIsThreeDaysAfterDeliveryDate() throws Exception {
         DateUtil.fakeIt(LocalDate.parse("2013-01-04"));
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-04"), parse("2013-01-01"), "morning");
 
@@ -85,7 +85,7 @@ public class MotherScheduleServiceTest {
     public void shouldEnrollMotherToDay2ScheduleOnTheNextDayOfRegistrationWhenRegistrationDateAndDeliveryDateAreSame() throws Exception {
         DateUtil.fakeIt(LocalDate.parse("2013-01-01"));
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-01"), parse("2013-01-01"), "morning");
 
@@ -97,7 +97,7 @@ public class MotherScheduleServiceTest {
     public void shouldEnrollMotherToDay2ScheduleOnTheNextDayOfRegistrationWhenRegistrationDateIsOneDayAfterDeliveryDate() throws Exception {
         DateUtil.fakeIt(LocalDate.parse("2013-01-02"));
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        when(preferredCallTimeService.getPreferredCallTime("afternoon")).thenReturn(LocalTime.parse("14:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("afternoon")).thenReturn(LocalTime.parse("14:30:00"));
 
         service.enroll("id", parse("2013-01-02"), parse("2013-01-01"), "afternoon");
 
@@ -109,7 +109,7 @@ public class MotherScheduleServiceTest {
     public void shouldEnrollMotherToDay4ScheduleOnTheNextDayOfRegistrationWhenRegistrationDateIsTwoDaysAfterDeliveryDate() throws Exception {
         DateUtil.fakeIt(LocalDate.parse("2013-01-03"));
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-03"), parse("2013-01-01"), "morning");
 
@@ -120,7 +120,7 @@ public class MotherScheduleServiceTest {
     @Test
     public void shouldEnrollMotherToDay5ScheduleOnTheNextDayOfRegistrationWhenRegistrationDateIsThreeDaysAfterDeliveryDate() throws Exception {
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-04"), parse("2013-01-01"), "morning");
 
@@ -131,7 +131,7 @@ public class MotherScheduleServiceTest {
     @Test
     public void shouldNotEnrollMotherToAnyScheduleWhenRegistrationDateIsSevenDaysAfterDeliveryDate() throws Exception {
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         service.enroll("id", parse("2013-01-08"), parse("2013-01-01"), "morning");
 

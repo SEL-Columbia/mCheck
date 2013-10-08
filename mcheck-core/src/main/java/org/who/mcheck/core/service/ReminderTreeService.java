@@ -20,17 +20,17 @@ public class ReminderTreeService {
     private AllTrees allTrees;
     private String treeName;
     private String audioFileUrl;
-    private UpdateCallStatusTokenOperation updateCallStatusTokenOperation;
+    private UpdateReminderStatusTokenOperation updateReminderStatusTokenOperation;
     private Log log = LogFactory.getLog(ReminderTreeService.class);
 
     @Autowired
     public ReminderTreeService(@Qualifier("treeDao") AllTrees allTrees,
-                               UpdateCallStatusTokenOperation updateCallStatusTokenOperation, @Value("#{mCheck['ivr.tree.name']}") String treeName,
+                               UpdateReminderStatusTokenOperation updateReminderStatusTokenOperation, @Value("#{mCheck['ivr.tree.name']}") String treeName,
                                @Value("#{mCheck['ivr.audio.file.url']}") String audioFileUrl) {
         this.allTrees = allTrees;
         this.treeName = treeName;
         this.audioFileUrl = audioFileUrl;
-        this.updateCallStatusTokenOperation = updateCallStatusTokenOperation;
+        this.updateReminderStatusTokenOperation = updateReminderStatusTokenOperation;
     }
 
     public void createMCheckIVRTrees() {
@@ -38,7 +38,7 @@ public class ReminderTreeService {
             Node rootNode = new Node()
                     .addPrompts(new AudioPrompt()
                             .setAudioFileUrl(MessageFormat.format(audioFileUrl, day)))
-                    .addOperations(updateCallStatusTokenOperation);
+                    .addOperations(updateReminderStatusTokenOperation);
             Tree tree = new Tree()
                     .setName(MessageFormat.format(treeName, day))
                     .setRootTransition(new Transition().setDestinationNode(rootNode));

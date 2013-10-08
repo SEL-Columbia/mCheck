@@ -7,9 +7,9 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.motechproject.scheduler.MotechSchedulerService;
 import org.motechproject.scheduler.domain.RunOnceSchedulableJob;
-import org.who.mcheck.core.domain.CallStatus;
-import org.who.mcheck.core.domain.CallStatusToken;
-import org.who.mcheck.core.repository.AllCallStatusTokens;
+import org.who.mcheck.core.domain.ReminderStatus;
+import org.who.mcheck.core.domain.ReminderStatusToken;
+import org.who.mcheck.core.repository.AllReminderStatusTokens;
 import org.who.mcheck.core.util.LocalTimeUtil;
 
 import static org.mockito.Matchers.argThat;
@@ -19,7 +19,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class RetryReminderServiceTest {
 
     @Mock
-    private AllCallStatusTokens allCallStatusTokens;
+    private AllReminderStatusTokens allReminderStatusTokens;
     @Mock
     private MotechSchedulerService motechSchedulerService;
 
@@ -28,7 +28,7 @@ public class RetryReminderServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        retryReminderService = new RetryReminderService(allCallStatusTokens, motechSchedulerService, "5");
+        retryReminderService = new RetryReminderService(allReminderStatusTokens, motechSchedulerService, "5");
     }
 
     @Test
@@ -37,8 +37,8 @@ public class RetryReminderServiceTest {
 
         retryReminderService.scheduleRetry("1234567890", "Day4", 2);
 
-        verify(allCallStatusTokens).addOrReplaceByPhoneNumber(
-                new CallStatusToken("1234567890", CallStatus.Unsuccessful)
+        verify(allReminderStatusTokens).addOrReplaceByPhoneNumber(
+                new ReminderStatusToken("1234567890", ReminderStatus.Unsuccessful)
                         .withDaySinceDelivery("Day4")
                         .withCallAttemptNumber(2));
         verify(motechSchedulerService).safeScheduleRunOnceJob(assertJob(new LocalTime(9, 5), "1234567890"));

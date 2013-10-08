@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.who.mcheck.core.AllConstants;
 import org.who.mcheck.core.domain.Mother;
-import org.who.mcheck.core.repository.AllCallStatusTokens;
+import org.who.mcheck.core.repository.AllReminderStatusTokens;
 import org.who.mcheck.core.repository.AllMothers;
 import org.who.mcheck.core.util.DateUtil;
 import org.who.mcheck.core.util.IntegerUtil;
@@ -28,26 +28,26 @@ public class ReminderService {
     private final Log log = LogFactory.getLog(ReminderService.class);
 
     private final AllMothers allMothers;
-    private final AllCallStatusTokens allCallStatusTokens;
+    private final AllReminderStatusTokens allReminderStatusTokens;
     private final IVRService callService;
     private final ScheduleTrackingService scheduleTrackingService;
     private final String callbackUrl;
-    private final PreferredCallTimeService preferredCallTimeService;
+    private final PreferredReminderTimeService preferredReminderTimeService;
     private RetryReminderService retryReminderService;
 
     @Autowired
     public ReminderService(AllMothers allMothers,
-                           AllCallStatusTokens allCallStatusTokens,
+                           AllReminderStatusTokens allReminderStatusTokens,
                            IVRService callService,
                            ScheduleTrackingService scheduleTrackingService,
-                           PreferredCallTimeService preferredCallTimeService,
+                           PreferredReminderTimeService preferredReminderTimeService,
                            RetryReminderService retryReminderService,
                            @Value("#{mCheck['ivr.callback.url']}") String callbackUrl) {
         this.allMothers = allMothers;
-        this.allCallStatusTokens = allCallStatusTokens;
+        this.allReminderStatusTokens = allReminderStatusTokens;
         this.callService = callService;
         this.scheduleTrackingService = scheduleTrackingService;
-        this.preferredCallTimeService = preferredCallTimeService;
+        this.preferredReminderTimeService = preferredReminderTimeService;
         this.retryReminderService = retryReminderService;
         this.callbackUrl = callbackUrl;
     }
@@ -88,7 +88,7 @@ public class ReminderService {
         enrollToSchedule(motherId,
                 today.plusDays(1),
                 MessageFormat.format(AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, nextCall),
-                preferredCallTimeService.getPreferredCallTime(mother.dailyCallPreference()));
+                preferredReminderTimeService.getPreferredCallTime(mother.dailyCallPreference()));
     }
 
     private void enrollToSchedule(String motherId, LocalDate referenceDate, String scheduleName, LocalTime callTime) {

@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.who.mcheck.core.AllConstants;
-import org.who.mcheck.core.domain.CallStatus;
-import org.who.mcheck.core.domain.CallStatusToken;
-import org.who.mcheck.core.repository.AllCallStatusTokens;
+import org.who.mcheck.core.domain.ReminderStatus;
+import org.who.mcheck.core.domain.ReminderStatusToken;
+import org.who.mcheck.core.repository.AllReminderStatusTokens;
 import org.who.mcheck.core.util.IntegerUtil;
 import org.who.mcheck.core.util.LocalTimeUtil;
 
@@ -25,25 +25,25 @@ public class RetryReminderService {
     private final Log log = LogFactory.getLog(RetryReminderService.class);
 
     private final MotechSchedulerService motechSchedulerService;
-    private AllCallStatusTokens allCallStatusTokens;
+    private AllReminderStatusTokens allReminderStatusTokens;
     private final int retryInterval;
 
     @Autowired
-    public RetryReminderService(AllCallStatusTokens allCallStatusTokens,
+    public RetryReminderService(AllReminderStatusTokens allReminderStatusTokens,
                                 MotechSchedulerService motechSchedulerService,
                                 @Value("#{mCheck['ivr.retry.interval']}") String retryInterval) {
-        this.allCallStatusTokens = allCallStatusTokens;
+        this.allReminderStatusTokens = allReminderStatusTokens;
         this.motechSchedulerService = motechSchedulerService;
         this.retryInterval = IntegerUtil.tryParse(retryInterval, AllConstants.DEFAULT_VALUE_FOR_RETRY_INTERVAL);
     }
 
     public void scheduleRetry(String contactNumber, String day, int attemptNumber) {
-        CallStatusToken callStatusToken = new CallStatusToken(contactNumber,
-                CallStatus.Unsuccessful)
+        ReminderStatusToken reminderStatusToken = new ReminderStatusToken(contactNumber,
+                ReminderStatus.Unsuccessful)
                 .withDaySinceDelivery(day)
                 .withCallAttemptNumber(attemptNumber);
-        log.info(MessageFormat.format("Creating or updating CallStatusToken for next retry attempt: {0}", callStatusToken));
-        allCallStatusTokens.addOrReplaceByPhoneNumber(callStatusToken);
+        log.info(MessageFormat.format("Creating or updating ReminderStatusToken for next retry attempt: {0}", reminderStatusToken));
+        allReminderStatusTokens.addOrReplaceByPhoneNumber(reminderStatusToken);
 
         Date retryTime = LocalTimeUtil.now().plusMinutes(retryInterval).toDateTimeToday().toDate();
         HashMap<String, Object> parameters = new HashMap<String, Object>();

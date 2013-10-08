@@ -23,14 +23,14 @@ public class MotherScheduleService {
     private final Log log = LogFactory.getLog(MotherScheduleService.class);
     private final int firstCallDelay;
     private ScheduleTrackingService scheduleTrackingService;
-    private PreferredCallTimeService preferredCallTimeService;
+    private PreferredReminderTimeService preferredReminderTimeService;
 
     @Autowired
     public MotherScheduleService(ScheduleTrackingService scheduleTrackingService,
                                  @Value("#{mCheck['first.call.delay']}") String firstCallDelay,
-                                 PreferredCallTimeService preferredCallTimeService) {
+                                 PreferredReminderTimeService preferredReminderTimeService) {
         this.scheduleTrackingService = scheduleTrackingService;
-        this.preferredCallTimeService = preferredCallTimeService;
+        this.preferredReminderTimeService = preferredReminderTimeService;
         this.firstCallDelay = IntegerUtil.tryParse(firstCallDelay, AllConstants.DEFAULT_FIRST_CALL_DELAY_IN_MINUTES);
     }
 
@@ -69,7 +69,7 @@ public class MotherScheduleService {
 
         String secondScheduleName = MessageFormat.format(AllConstants.Schedule.POST_DELIVERY_DANGER_SIGNS_SCHEDULE_TEMPLATE, firstSchedule + 1);
         LocalDate secondScheduleReferenceDate = registrationDate.plusDays(1);
-        enrollToSchedule(motherId, secondScheduleReferenceDate, secondScheduleName, preferredCallTimeService.getPreferredCallTime(dailyCallPreference));
+        enrollToSchedule(motherId, secondScheduleReferenceDate, secondScheduleName, preferredReminderTimeService.getPreferredCallTime(dailyCallPreference));
     }
 
     private void enrollToSchedule(String motherId, LocalDate referenceDate, String scheduleName, LocalTime callTime) {

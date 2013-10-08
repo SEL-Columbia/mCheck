@@ -12,7 +12,7 @@ import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.who.mcheck.core.domain.Mother;
-import org.who.mcheck.core.repository.AllCallStatusTokens;
+import org.who.mcheck.core.repository.AllReminderStatusTokens;
 import org.who.mcheck.core.repository.AllMothers;
 import org.who.mcheck.core.util.DateUtil;
 import org.who.mcheck.core.util.LocalTimeUtil;
@@ -26,7 +26,7 @@ public class ReminderServiceTest {
     @Mock
     private AllMothers allMothers;
     @Mock
-    private AllCallStatusTokens allCallStatusTokens;
+    private AllReminderStatusTokens allReminderStatusTokens;
     @Mock
     private IVRService ivrService;
     @Mock
@@ -34,7 +34,7 @@ public class ReminderServiceTest {
     @Mock
     private RetryReminderService retryReminderService;
     @Mock
-    private PreferredCallTimeService preferredCallTimeService;
+    private PreferredReminderTimeService preferredReminderTimeService;
     private ReminderService reminderService;
 
     @Before
@@ -42,9 +42,9 @@ public class ReminderServiceTest {
         initMocks(this);
         reminderService = new ReminderService(
                 allMothers,
-                allCallStatusTokens, ivrService,
+                allReminderStatusTokens, ivrService,
                 scheduleTrackingService,
-                preferredCallTimeService, retryReminderService, "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-{0}&trP=Lw&ln=en"
+                preferredReminderTimeService, retryReminderService, "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-{0}&trP=Lw&ln=en"
         );
     }
 
@@ -53,7 +53,7 @@ public class ReminderServiceTest {
         Mother mother = new Mother("id", "Anamika", "Arun", "caseId",
                 "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
         when(allMothers.get("mother id")).thenReturn(mother);
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         reminderService.remindMother("mother id", "Post Delivery Danger Signs - Day 4", "Day4");
 
@@ -66,7 +66,7 @@ public class ReminderServiceTest {
         Mother mother = new Mother("id", "Anamika", "Arun", "caseId",
                 "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
         when(allMothers.get("mother id")).thenReturn(mother);
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         reminderService.remindMother("mother id", "Post Delivery Danger Signs - Day 4", "Day4");
 
@@ -79,7 +79,7 @@ public class ReminderServiceTest {
         Mother mother = new Mother("id", "Anamika", "Arun", "caseId",
                 "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
         when(allMothers.get("mother id")).thenReturn(mother);
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         reminderService.remindMother("mother id", "Post Delivery Danger Signs - Day 4", "Day4");
 
@@ -121,7 +121,7 @@ public class ReminderServiceTest {
         Mother mother = new Mother("id", "Anamika", "Arun", "caseId",
                 "2013-01-01", "2013-01-01", "1234567890", "morning", "instanceId", "2013-01-01");
         when(allMothers.get("mother id")).thenReturn(mother);
-        when(preferredCallTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
+        when(preferredReminderTimeService.getPreferredCallTime("morning")).thenReturn(LocalTime.parse("09:30:00"));
 
         reminderService.remindMother("mother id", "Post Delivery Danger Signs - Day 4", "Day4");
 

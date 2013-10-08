@@ -8,28 +8,28 @@ import org.motechproject.decisiontree.core.model.INodeOperation;
 import org.motechproject.decisiontree.server.domain.FlowSessionRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.who.mcheck.core.domain.CallStatusToken;
-import org.who.mcheck.core.repository.AllCallStatusTokens;
+import org.who.mcheck.core.domain.ReminderStatusToken;
+import org.who.mcheck.core.repository.AllReminderStatusTokens;
 
 import static java.text.MessageFormat.format;
 
 @Service
-public class UpdateCallStatusTokenOperation implements INodeOperation {
+public class UpdateReminderStatusTokenOperation implements INodeOperation {
 
     private final Log log = LogFactory.getLog(MotherScheduleService.class);
-    private AllCallStatusTokens allCallStatusTokens;
+    private AllReminderStatusTokens allReminderStatusTokens;
 
-    private UpdateCallStatusTokenOperation() {
+    private UpdateReminderStatusTokenOperation() {
     }
 
     @Autowired
-    public UpdateCallStatusTokenOperation(AllCallStatusTokens allCallStatusTokens) {
-        this.allCallStatusTokens = allCallStatusTokens;
+    public UpdateReminderStatusTokenOperation(AllReminderStatusTokens allReminderStatusTokens) {
+        this.allReminderStatusTokens = allReminderStatusTokens;
     }
 
     @Override
     public void perform(String userInput, FlowSession session) {
-        CallStatusToken token = allCallStatusTokens.findByContactNumber(session.getPhoneNumber());
+        ReminderStatusToken token = allReminderStatusTokens.findByContactNumber(session.getPhoneNumber());
         if (token == null) {
             log.warn(format("Could not find a call status token for the phone number: {0}. Flow session: {1}",
                     session.getPhoneNumber(), session));
@@ -40,6 +40,6 @@ public class UpdateCallStatusTokenOperation implements INodeOperation {
                         session.getPhoneNumber(),
                         ToStringBuilder.reflectionToString(((FlowSessionRecord) session).getCallDetailRecord())));
         token.markCallStatusAsSuccessful();
-        allCallStatusTokens.update(token);
+        allReminderStatusTokens.update(token);
     }
 }

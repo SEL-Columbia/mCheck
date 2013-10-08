@@ -9,9 +9,9 @@ import org.motechproject.event.MotechEvent;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
 import org.motechproject.scheduler.MotechSchedulerService;
-import org.who.mcheck.core.domain.CallStatus;
-import org.who.mcheck.core.domain.CallStatusToken;
-import org.who.mcheck.core.repository.AllCallStatusTokens;
+import org.who.mcheck.core.domain.ReminderStatus;
+import org.who.mcheck.core.domain.ReminderStatusToken;
+import org.who.mcheck.core.repository.AllReminderStatusTokens;
 import org.who.mcheck.core.service.RetryReminderService;
 import org.who.mcheck.core.util.LocalTimeUtil;
 
@@ -24,7 +24,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class RetryReminderListenerTest {
 
     @Mock
-    private AllCallStatusTokens allCallStatusTokens;
+    private AllReminderStatusTokens allReminderStatusTokens;
     @Mock
     private RetryReminderService retryReminderService;
     @Mock
@@ -35,7 +35,7 @@ public class RetryReminderListenerTest {
     public void setUp() throws Exception {
         initMocks(this);
         retryReminderListener = new RetryReminderListener(
-                allCallStatusTokens,
+                allReminderStatusTokens,
                 ivrService,
                 retryReminderService, "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-{0}&trP=Lw&ln=en",
                 "2"
@@ -45,10 +45,10 @@ public class RetryReminderListenerTest {
     @Test
     public void shouldRetryCallWhenPreviousCallAttemptWasUnsuccessfulAndMaximumNumberOfRetriesHaveNotBeenAttempted() throws Exception {
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        CallStatusToken initialCallStatusToken = new CallStatusToken("contact number 1", CallStatus.Unsuccessful)
+        ReminderStatusToken initialReminderStatusToken = new ReminderStatusToken("contact number 1", ReminderStatus.Unsuccessful)
                 .withCallAttemptNumber(1).withDaySinceDelivery("Day1");
-        when(allCallStatusTokens.findByContactNumber("contact number 1"))
-                .thenReturn(initialCallStatusToken);
+        when(allReminderStatusTokens.findByContactNumber("contact number 1"))
+                .thenReturn(initialReminderStatusToken);
 
         retryReminderListener.retry(motechEvent("contact number 1"));
 
@@ -59,10 +59,10 @@ public class RetryReminderListenerTest {
     @Test
     public void shouldNotScheduleAnotherRetryJobWhenTheCurrentRetryAttemptIsTheMaximum() throws Exception {
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        CallStatusToken initialCallStatusToken = new CallStatusToken("contact number 1", CallStatus.Unsuccessful)
+        ReminderStatusToken initialReminderStatusToken = new ReminderStatusToken("contact number 1", ReminderStatus.Unsuccessful)
                 .withCallAttemptNumber(3).withDaySinceDelivery("Day1");
-        when(allCallStatusTokens.findByContactNumber("contact number 1"))
-                .thenReturn(initialCallStatusToken);
+        when(allReminderStatusTokens.findByContactNumber("contact number 1"))
+                .thenReturn(initialReminderStatusToken);
 
         retryReminderListener.retry(motechEvent("contact number 1"));
 
@@ -74,10 +74,10 @@ public class RetryReminderListenerTest {
     @Test
     public void shouldNotMakeCallWhenPreviousAttemptWasSuccessful() throws Exception {
         LocalTimeUtil.fakeIt(new LocalTime(9, 0));
-        CallStatusToken initialCallStatusToken = new CallStatusToken("contact number 1", CallStatus.Successful)
+        ReminderStatusToken initialReminderStatusToken = new ReminderStatusToken("contact number 1", ReminderStatus.Successful)
                 .withCallAttemptNumber(1).withDaySinceDelivery("Day1");
-        when(allCallStatusTokens.findByContactNumber("contact number 1"))
-                .thenReturn(initialCallStatusToken);
+        when(allReminderStatusTokens.findByContactNumber("contact number 1"))
+                .thenReturn(initialReminderStatusToken);
 
         retryReminderListener.retry(motechEvent("contact number 1"));
 

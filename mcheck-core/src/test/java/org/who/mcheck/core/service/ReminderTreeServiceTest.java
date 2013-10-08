@@ -21,7 +21,7 @@ public class ReminderTreeServiceTest {
     @Mock
     private AllTrees allTrees;
     @Mock
-    private UpdateCallStatusTokenOperation updateCallStatusTokenOperation;
+    private UpdateReminderStatusTokenOperation updateReminderStatusTokenOperation;
 
     @Before
     public void setUp() throws Exception {
@@ -30,7 +30,7 @@ public class ReminderTreeServiceTest {
 
     @Test
     public void shouldCreateCallTree() throws Exception {
-        ReminderTreeService service = new ReminderTreeService(allTrees, updateCallStatusTokenOperation, "mCheckTree-Day{0}", "http://server.com/PostPartum/Day{0}.mp3");
+        ReminderTreeService service = new ReminderTreeService(allTrees, updateReminderStatusTokenOperation, "mCheckTree-Day{0}", "http://server.com/PostPartum/Day{0}.mp3");
 
         service.createMCheckIVRTrees();
 
@@ -55,7 +55,7 @@ public class ReminderTreeServiceTest {
                         && prompts.size() == 1
                         && audioFileURL.equals(((AudioPrompt) prompts.get(0)).getAudioFileUrl()) &&
                         operations.size() == 1
-                        && updateCallStatusTokenOperation.equals(operations.get(0));
+                        && updateReminderStatusTokenOperation.equals(operations.get(0));
             }
         });
     }
