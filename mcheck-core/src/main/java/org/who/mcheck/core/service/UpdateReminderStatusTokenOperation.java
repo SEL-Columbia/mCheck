@@ -17,6 +17,7 @@ import org.who.mcheck.core.repository.AllReminderStatusTokens;
 import java.text.MessageFormat;
 
 import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
 @Service
 public class UpdateReminderStatusTokenOperation implements INodeOperation, ApplicationContextAware {
@@ -39,6 +40,9 @@ public class UpdateReminderStatusTokenOperation implements INodeOperation, Appli
             if (allReminderStatusTokens == null) {
                 log.info("AllReminderStatusTokens is null, so autowiring it");
                 allReminderStatusTokens = applicationContext.getBean(AllReminderStatusTokens.class);
+                if (allReminderStatusTokens == null) {
+                    log.error("Autowiring of AllReminderStatusTokens did not work!");
+                }
             }
             ReminderStatusToken token = allReminderStatusTokens.findByContactNumber(session.getPhoneNumber());
             if (token == null) {
@@ -53,7 +57,7 @@ public class UpdateReminderStatusTokenOperation implements INodeOperation, Appli
             token.markCallStatusAsSuccessful();
             allReminderStatusTokens.update(token);
         } catch (Exception e) {
-            log.error(MessageFormat.format("Error when executing UpdateReminderStatusTokenOperation. Exception: {0}", e));
+            log.error(MessageFormat.format("Error when executing UpdateReminderStatusTokenOperation. Exception: {0}, Stack trace: {1}", e, getFullStackTrace(e)));
         }
     }
 
