@@ -3,7 +3,6 @@ package org.who.mcheck.core.service;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.decisiontree.core.model.INodeOperation;
 import org.motechproject.decisiontree.server.domain.FlowSessionRecord;
@@ -23,11 +22,8 @@ import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace
 @Component
 public class UpdateReminderStatusTokenOperation implements INodeOperation, ApplicationContextAware {
 
-    @JsonProperty
     private final Log log = LogFactory.getLog(UpdateReminderStatusTokenOperation.class);
-    @JsonProperty
     private AllReminderStatusTokens allReminderStatusTokens;
-    @JsonProperty
     private ApplicationContext applicationContext;
 
     public UpdateReminderStatusTokenOperation() {
