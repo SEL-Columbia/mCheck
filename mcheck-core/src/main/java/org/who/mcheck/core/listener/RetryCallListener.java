@@ -53,10 +53,10 @@ public class RetryCallListener {
 
     @MotechListener(subjects = AllConstants.RETRY_CALL_EVENT_SUBJECT)
     public void retry(MotechEvent event) throws Exception {
-        log.info(format("Got a retry call event: {1}", event));
+        log.info(format("Got a retry call event: {0}", event));
 
         CallStatusToken token = allCallStatusTokens.findByContactNumber(getParameter(event, CONTACT_NUMBER));
-        log.info(format("Found a call status token: {1}", token));
+        log.info(format("Found a call status token: {0}", token));
 
         if (CallStatus.Successful.equals(token.callStatus())) {
             log.info(format("Not attempting a retry of call as the previous attempt was successful. CallStatusToken: {0}", token));
