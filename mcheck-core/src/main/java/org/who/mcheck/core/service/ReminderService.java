@@ -4,36 +4,28 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
-import org.motechproject.event.MotechEvent;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
 import org.motechproject.model.Time;
-import org.motechproject.scheduler.MotechSchedulerService;
-import org.motechproject.scheduler.domain.RunOnceSchedulableJob;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.who.mcheck.core.AllConstants;
-import org.who.mcheck.core.domain.CallStatus;
-import org.who.mcheck.core.domain.CallStatusToken;
 import org.who.mcheck.core.domain.Mother;
 import org.who.mcheck.core.repository.AllCallStatusTokens;
 import org.who.mcheck.core.repository.AllMothers;
 import org.who.mcheck.core.util.DateUtil;
 import org.who.mcheck.core.util.IntegerUtil;
-import org.who.mcheck.core.util.LocalTimeUtil;
 
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.UUID;
-
-import static org.who.mcheck.core.AllConstants.BirthRegistrationFormFields.CONTACT_NUMBER;
 
 @Service
 public class ReminderService {
+
+    private final Log log = LogFactory.getLog(ReminderService.class);
 
     private final AllMothers allMothers;
     private final AllCallStatusTokens allCallStatusTokens;
@@ -41,28 +33,23 @@ public class ReminderService {
     private final ScheduleTrackingService scheduleTrackingService;
     private final String callbackUrl;
     private final PreferredCallTimeService preferredCallTimeService;
-    private final MotechSchedulerService motechSchedulerService;
-    private final int retryInterval;
-
-    private final Log log = LogFactory.getLog(ReminderService.class);
+    private RetryReminderService retryReminderService;
 
     @Autowired
     public ReminderService(AllMothers allMothers,
                            AllCallStatusTokens allCallStatusTokens,
                            IVRService callService,
                            ScheduleTrackingService scheduleTrackingService,
-                           MotechSchedulerService motechSchedulerService,
-                           @Value("#{mCheck['ivr.callback.url']}") String callbackUrl,
-                           @Value("#{mCheck['ivr.retry.interval']}") String retryInterval,
-                           PreferredCallTimeService preferredCallTimeService) {
+                           PreferredCallTimeService preferredCallTimeService,
+                           RetryReminderService retryReminderService,
+                           @Value("#{mCheck['ivr.callback.url']}") String callbackUrl) {
         this.allMothers = allMothers;
         this.allCallStatusTokens = allCallStatusTokens;
         this.callService = callService;
         this.scheduleTrackingService = scheduleTrackingService;
-        this.motechSchedulerService = motechSchedulerService;
-        this.callbackUrl = callbackUrl;
-        this.retryInterval = IntegerUtil.tryParse(retryInterval, AllConstants.DEFAULT_VALUE_FOR_RETRY_INTERVAL);
         this.preferredCallTimeService = preferredCallTimeService;
+        this.retryReminderService = retryReminderService;
+        this.callbackUrl = callbackUrl;
     }
 
     public void remindMother(String motherId, String scheduleName, String dayWithReferenceToRegistrationDate) {
@@ -72,28 +59,9 @@ public class ReminderService {
             return;
         }
 
-        setupRetryIfCallIsUnsuccessful(dayWithReferenceToRegistrationDate, mother);
+        retryReminderService.scheduleRetry(mother.contactNumber(), dayWithReferenceToRegistrationDate, 1);
         makeTodaysCall(dayWithReferenceToRegistrationDate, mother);
         scheduleTomorrowsCall(motherId, scheduleName, dayWithReferenceToRegistrationDate, mother);
-    }
-
-    private void setupRetryIfCallIsUnsuccessful(String dayWithReferenceToRegistrationDate, Mother mother) {
-        CallStatusToken callStatusToken = new CallStatusToken(mother.contactNumber(),
-                CallStatus.Unsuccessful)
-                .withDaySinceDelivery(dayWithReferenceToRegistrationDate)
-                .withCallAttemptNumber(1);
-        log.info(MessageFormat.format("Creating a CallStatusToken: {0}", callStatusToken));
-        allCallStatusTokens.addOrReplaceByPhoneNumber(callStatusToken);
-
-        Date retryTime = LocalTimeUtil.now().plusMinutes(retryInterval).toDateTimeToday().toDate();
-        HashMap<String, Object> parameters = new HashMap<>();
-        parameters.put(CONTACT_NUMBER, mother.contactNumber());
-        parameters.put(MotechSchedulerService.JOB_ID_KEY, UUID.randomUUID().toString());
-        MotechEvent event = new MotechEvent(AllConstants.RETRY_CALL_EVENT_SUBJECT, parameters);
-        RunOnceSchedulableJob job = new RunOnceSchedulableJob(event, retryTime);
-
-        log.info(MessageFormat.format("Scheduling a retry call job with the following information: {0}", job));
-        motechSchedulerService.safeScheduleRunOnceJob(job);
     }
 
     private void makeTodaysCall(String dayWithReferenceToRegistrationDate, Mother mother) {

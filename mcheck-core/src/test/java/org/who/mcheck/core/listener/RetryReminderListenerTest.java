@@ -9,10 +9,10 @@ import org.motechproject.event.MotechEvent;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
 import org.motechproject.scheduler.MotechSchedulerService;
-import org.motechproject.scheduler.domain.RunOnceSchedulableJob;
 import org.who.mcheck.core.domain.CallStatus;
 import org.who.mcheck.core.domain.CallStatusToken;
 import org.who.mcheck.core.repository.AllCallStatusTokens;
+import org.who.mcheck.core.service.RetryReminderService;
 import org.who.mcheck.core.util.LocalTimeUtil;
 
 import java.util.HashMap;
@@ -21,25 +21,25 @@ import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class RetryCallListenerTest {
+public class RetryReminderListenerTest {
 
     @Mock
     private AllCallStatusTokens allCallStatusTokens;
     @Mock
-    private MotechSchedulerService motechSchedulerService;
+    private RetryReminderService retryReminderService;
     @Mock
     private IVRService ivrService;
-    private RetryCallListener retryCallListener;
+    private RetryReminderListener retryReminderListener;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        retryCallListener = new RetryCallListener(
+        retryReminderListener = new RetryReminderListener(
                 allCallStatusTokens,
-                motechSchedulerService,
                 ivrService,
-                "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-{0}&trP=Lw&ln=en",
-                "5", "2");
+                retryReminderService, "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-{0}&trP=Lw&ln=en",
+                "2"
+        );
     }
 
     @Test
@@ -50,12 +50,9 @@ public class RetryCallListenerTest {
         when(allCallStatusTokens.findByContactNumber("contact number 1"))
                 .thenReturn(initialCallStatusToken);
 
-        retryCallListener.retry(motechEvent("contact number 1"));
+        retryReminderListener.retry(motechEvent("contact number 1"));
 
-        CallStatusToken expectedCallStatusToken = new CallStatusToken("contact number 1", CallStatus.Unsuccessful)
-                .withCallAttemptNumber(2).withDaySinceDelivery("Day1");
-        verify(allCallStatusTokens).addOrReplaceByPhoneNumber(expectedCallStatusToken);
-        verify(motechSchedulerService).safeScheduleRunOnceJob(assertJob(new LocalTime(9, 5), "contact number 1"));
+        verify(retryReminderService).scheduleRetry("contact number 1", "Day1", 2);
         verify(ivrService).initiateCall(assertCallRequest("contact number 1", "http://server.com/mcheckivr/kookoo/ivr?tree=mCheckTree-Day1&trP=Lw&ln=en"));
     }
 
@@ -67,11 +64,11 @@ public class RetryCallListenerTest {
         when(allCallStatusTokens.findByContactNumber("contact number 1"))
                 .thenReturn(initialCallStatusToken);
 
-        retryCallListener.retry(motechEvent("contact number 1"));
+        retryReminderListener.retry(motechEvent("contact number 1"));
 
-        verify(allCallStatusTokens, times(0)).addOrReplaceByPhoneNumber(any(CallStatusToken.class));
+        verifyZeroInteractions(retryReminderService);
         verifyZeroInteractions(ivrService);
-        verifyZeroInteractions(motechSchedulerService);
+
     }
 
     @Test
@@ -82,11 +79,10 @@ public class RetryCallListenerTest {
         when(allCallStatusTokens.findByContactNumber("contact number 1"))
                 .thenReturn(initialCallStatusToken);
 
-        retryCallListener.retry(motechEvent("contact number 1"));
+        retryReminderListener.retry(motechEvent("contact number 1"));
 
-        verify(allCallStatusTokens, times(0)).addOrReplaceByPhoneNumber(any(CallStatusToken.class));
+        verifyZeroInteractions(retryReminderService);
         verifyZeroInteractions(ivrService);
-        verifyZeroInteractions(motechSchedulerService);
     }
 
     private MotechEvent motechEvent(String contactNumber) {
@@ -94,19 +90,6 @@ public class RetryCallListenerTest {
         parameters.put("contactNumber", contactNumber);
         parameters.put(MotechSchedulerService.JOB_ID_KEY, "job id 1");
         return new MotechEvent("RETRY-CALL-EVENT", parameters);
-    }
-
-    private RunOnceSchedulableJob assertJob(final LocalTime retryTime, final String contactNumber) {
-        return argThat(new ArgumentMatcher<RunOnceSchedulableJob>() {
-            @Override
-            public boolean matches(Object o) {
-                RunOnceSchedulableJob job = (RunOnceSchedulableJob) o;
-                return retryTime.toDateTimeToday().toDate().equals(job.getStartDate())
-                        && "RETRY-CALL-EVENT".equals(job.getMotechEvent().getSubject())
-                        && job.getMotechEvent().getParameters().get("contactNumber").equals(contactNumber)
-                        && job.getMotechEvent().getParameters().get(MotechSchedulerService.JOB_ID_KEY) != null;
-            }
-        });
     }
 
     private CallRequest assertCallRequest(final String phoneNumber, final String callbackUrl) {

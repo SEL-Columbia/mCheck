@@ -6,8 +6,6 @@ import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
-import org.motechproject.scheduler.MotechSchedulerService;
-import org.motechproject.scheduler.domain.RunOnceSchedulableJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,39 +13,34 @@ import org.who.mcheck.core.AllConstants;
 import org.who.mcheck.core.domain.CallStatus;
 import org.who.mcheck.core.domain.CallStatusToken;
 import org.who.mcheck.core.repository.AllCallStatusTokens;
+import org.who.mcheck.core.service.RetryReminderService;
 import org.who.mcheck.core.util.IntegerUtil;
-import org.who.mcheck.core.util.LocalTimeUtil;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.UUID;
 
 import static java.text.MessageFormat.format;
 import static org.who.mcheck.core.AllConstants.BirthRegistrationFormFields.CONTACT_NUMBER;
 
 @Component
-public class RetryCallListener {
+public class RetryReminderListener {
 
-    private final Log log = LogFactory.getLog(RetryCallListener.class);
+    private final Log log = LogFactory.getLog(RetryReminderListener.class);
     private final AllCallStatusTokens allCallStatusTokens;
-    private final MotechSchedulerService motechSchedulerService;
     private final IVRService callService;
     private final String callbackUrl;
-    private final int retryInterval;
+    private RetryReminderService retryReminderService;
     private final int maximumNumberOfRetries;
 
     @Autowired
-    public RetryCallListener(AllCallStatusTokens allCallStatusTokens,
-                             MotechSchedulerService motechSchedulerService,
-                             IVRService callService,
-                             @Value("#{mCheck['ivr.callback.url']}") String callbackUrl,
-                             @Value("#{mCheck['ivr.retry.interval']}") String retryInterval,
-                             @Value("#{mCheck['ivr.max.retries']}") String maximumNumberOfRetries) {
+    public RetryReminderListener(AllCallStatusTokens allCallStatusTokens,
+                                 IVRService callService,
+                                 RetryReminderService retryReminderService,
+                                 @Value("#{mCheck['ivr.callback.url']}") String callbackUrl,
+                                 @Value("#{mCheck['ivr.max.retries']}") String maximumNumberOfRetries) {
         this.allCallStatusTokens = allCallStatusTokens;
-        this.motechSchedulerService = motechSchedulerService;
         this.callService = callService;
+        this.retryReminderService = retryReminderService;
         this.callbackUrl = callbackUrl;
-        this.retryInterval = IntegerUtil.tryParse(retryInterval, AllConstants.DEFAULT_VALUE_FOR_RETRY_INTERVAL);
         this.maximumNumberOfRetries = IntegerUtil.tryParse(maximumNumberOfRetries, AllConstants.DEFAULT_VALUE_FOR_MAXIMUM_NUMBER_OF_RETRIES);
     }
 
@@ -68,23 +61,7 @@ public class RetryCallListener {
             return;
         }
 
-        CallStatusToken tokenForNextRetry = new CallStatusToken(token.contactNumber(),
-                CallStatus.Unsuccessful)
-                .withDaySinceDelivery(token.daySinceDelivery())
-                .withCallAttemptNumber(token.attemptNumber() + 1);
-        log.info(format("Updating CallStatusToken for next retry attempt to: {0}", tokenForNextRetry));
-        allCallStatusTokens.addOrReplaceByPhoneNumber(tokenForNextRetry);
-
-        Date retryTime = LocalTimeUtil.now().plusMinutes(retryInterval).toDateTimeToday().toDate();
-        HashMap<String, Object> parameters = new HashMap<>();
-        parameters.put(CONTACT_NUMBER, token.contactNumber());
-        parameters.put(MotechSchedulerService.JOB_ID_KEY, UUID.randomUUID().toString());
-        MotechEvent nextRetryEvent = new MotechEvent(AllConstants.RETRY_CALL_EVENT_SUBJECT, parameters);
-        RunOnceSchedulableJob job = new RunOnceSchedulableJob(nextRetryEvent, retryTime);
-
-        log.info(format("Scheduling a retry call job with the following information: {0}", job));
-        motechSchedulerService.safeScheduleRunOnceJob(job);
-
+        retryReminderService.scheduleRetry(token.contactNumber(), token.daySinceDelivery(), token.attemptNumber() + 1);
         CallRequest callRequest = new CallRequest(
                 token.contactNumber(),
                 new HashMap<String, String>(),
