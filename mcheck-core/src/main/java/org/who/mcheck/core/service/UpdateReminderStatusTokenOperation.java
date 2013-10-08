@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+import org.who.mcheck.core.ApplicationContextUtils;
 import org.who.mcheck.core.domain.ReminderStatusToken;
 import org.who.mcheck.core.repository.AllReminderStatusTokens;
 
@@ -27,6 +28,7 @@ public class UpdateReminderStatusTokenOperation implements INodeOperation, Appli
     private ApplicationContext applicationContext;
 
     public UpdateReminderStatusTokenOperation() {
+        applicationContext = ApplicationContextUtils.getApplicationContext();
     }
 
     @Autowired
