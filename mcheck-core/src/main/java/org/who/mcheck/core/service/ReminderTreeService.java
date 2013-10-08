@@ -25,7 +25,8 @@ public class ReminderTreeService {
 
     @Autowired
     public ReminderTreeService(@Qualifier("treeDao") AllTrees allTrees,
-                               UpdateReminderStatusTokenOperation updateReminderStatusTokenOperation, @Value("#{mCheck['ivr.tree.name']}") String treeName,
+                               UpdateReminderStatusTokenOperation updateReminderStatusTokenOperation,
+                               @Value("#{mCheck['ivr.tree.name']}") String treeName,
                                @Value("#{mCheck['ivr.audio.file.url']}") String audioFileUrl) {
         this.allTrees = allTrees;
         this.treeName = treeName;
