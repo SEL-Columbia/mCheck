@@ -19,6 +19,9 @@ public class UpdateCallStatusTokenOperation implements INodeOperation {
     private final Log log = LogFactory.getLog(MotherScheduleService.class);
     private AllCallStatusTokens allCallStatusTokens;
 
+    private UpdateCallStatusTokenOperation() {
+    }
+
     @Autowired
     public UpdateCallStatusTokenOperation(AllCallStatusTokens allCallStatusTokens) {
         this.allCallStatusTokens = allCallStatusTokens;
