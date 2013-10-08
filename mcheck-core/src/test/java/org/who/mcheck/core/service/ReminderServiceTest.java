@@ -131,7 +131,7 @@ public class ReminderServiceTest {
 
         reminderService.remindMother("mother id", "Post Delivery Danger Signs - Day 4", "Day4");
 
-        verify(allCallStatusTokens).createOrReplaceByPhoneNumber(
+        verify(allCallStatusTokens).addOrReplaceByPhoneNumber(
                 new CallStatusToken("1234567890", CallStatus.Unsuccessful)
                         .withDaySinceDelivery("Day4")
                         .withCallAttemptNumber(1));
@@ -170,7 +170,8 @@ public class ReminderServiceTest {
             @Override
             public boolean matches(Object o) {
                 CallRequest callRequest = (CallRequest) o;
-                return phoneNumber.equals(callRequest.getPhone()) && callbackUrl.equals(callRequest.getCallBackUrl());
+                return phoneNumber.equals(callRequest.getPhone())
+                        && callbackUrl.equals(callRequest.getCallBackUrl());
             }
         });
     }

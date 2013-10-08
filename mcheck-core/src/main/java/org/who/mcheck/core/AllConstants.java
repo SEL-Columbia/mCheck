@@ -4,6 +4,7 @@ public class AllConstants {
 
     public static final int DEFAULT_FIRST_CALL_DELAY_IN_MINUTES = 5;
     public static final int DEFAULT_VALUE_FOR_RETRY_INTERVAL = 20;
+    public static final int DEFAULT_VALUE_FOR_MAXIMUM_NUMBER_OF_RETRIES = 2;
     public static final String RETRY_CALL_EVENT_SUBJECT = "RETRY-CALL-EVENT";
 
     public static class BirthRegistrationFormFields {

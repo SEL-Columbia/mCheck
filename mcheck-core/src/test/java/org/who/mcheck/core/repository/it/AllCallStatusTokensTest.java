@@ -42,7 +42,7 @@ public class AllCallStatusTokensTest {
     public void shouldUpdateCallStatusByPhoneNumber() throws Exception {
         allCallStatusTokens.add(new CallStatusToken("phone 1", CallStatus.Unsuccessful));
 
-        allCallStatusTokens.createOrReplaceByPhoneNumber(new CallStatusToken("phone 1", CallStatus.Successful));
+        allCallStatusTokens.addOrReplaceByPhoneNumber(new CallStatusToken("phone 1", CallStatus.Successful));
 
         CallStatusToken updatedToken = allCallStatusTokens.findByContactNumber("phone 1");
         assertEquals(new CallStatusToken("phone 1", CallStatus.Successful), updatedToken);
@@ -50,7 +50,7 @@ public class AllCallStatusTokensTest {
 
     @Test
     public void shouldCreateCallStatusWhenItDoesNotExistByPhoneNumber() throws Exception {
-        allCallStatusTokens.createOrReplaceByPhoneNumber(new CallStatusToken("phone 1", CallStatus.Successful));
+        allCallStatusTokens.addOrReplaceByPhoneNumber(new CallStatusToken("phone 1", CallStatus.Successful));
 
         CallStatusToken createdToken = allCallStatusTokens.findByContactNumber("phone 1");
         assertEquals(new CallStatusToken("phone 1", CallStatus.Successful), createdToken);

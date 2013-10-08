@@ -14,7 +14,9 @@ public class CallStatusToken extends MotechBaseDataObject {
     private String contactNumber;
     @JsonProperty
     private CallStatus callStatus;
+    @JsonProperty
     private String daySinceDelivery;
+    @JsonProperty
     private int attemptNumber;
 
     private CallStatusToken() {
@@ -46,6 +48,18 @@ public class CallStatusToken extends MotechBaseDataObject {
 
     public String contactNumber() {
         return contactNumber;
+    }
+
+    public CallStatus callStatus() {
+        return callStatus;
+    }
+
+    public String daySinceDelivery() {
+        return daySinceDelivery;
+    }
+
+    public int attemptNumber() {
+        return attemptNumber;
     }
 
     @Override

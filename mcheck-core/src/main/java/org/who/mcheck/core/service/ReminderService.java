@@ -83,7 +83,7 @@ public class ReminderService {
                 .withDaySinceDelivery(dayWithReferenceToRegistrationDate)
                 .withCallAttemptNumber(1);
         log.info(MessageFormat.format("Creating a CallStatusToken: {0}", callStatusToken));
-        allCallStatusTokens.createOrReplaceByPhoneNumber(callStatusToken);
+        allCallStatusTokens.addOrReplaceByPhoneNumber(callStatusToken);
 
         Date retryTime = LocalTimeUtil.now().plusMinutes(retryInterval).toDateTimeToday().toDate();
         HashMap<String, Object> parameters = new HashMap<>();
