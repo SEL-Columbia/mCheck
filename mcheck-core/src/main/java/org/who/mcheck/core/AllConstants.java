@@ -4,7 +4,11 @@ public class AllConstants {
 
     public static final int DEFAULT_FIRST_CALL_DELAY_IN_MINUTES = 5;
     public static final int DEFAULT_VALUE_FOR_RETRY_INTERVAL = 20;
-    public static final String RETRY_IVR_CALL_EVENT_SUBJECT = "RETRY-IVR-CALL-EVENT";
+    public static final String RETRY_CALL_EVENT_SUBJECT = "RETRY-CALL-EVENT";
+
+    public static class BirthRegistrationFormFields {
+        public static final String CONTACT_NUMBER = "contactNumber";
+    }
 
     public static class Schedule {
         public static final String POST_DELIVERY_DANGER_SIGNS_SCHEDULE_NAME_PREFIX = "Post Delivery Danger Signs";

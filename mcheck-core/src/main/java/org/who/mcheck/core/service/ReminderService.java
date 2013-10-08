@@ -28,13 +28,16 @@ import org.who.mcheck.core.util.LocalTimeUtil;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
+
+import static org.who.mcheck.core.AllConstants.BirthRegistrationFormFields.CONTACT_NUMBER;
 
 @Service
 public class ReminderService {
 
     private final AllMothers allMothers;
     private final AllCallStatusTokens allCallStatusTokens;
-    private final IVRService ivrService;
+    private final IVRService callService;
     private final ScheduleTrackingService scheduleTrackingService;
     private final String callbackUrl;
     private final PreferredCallTimeService preferredCallTimeService;
@@ -46,7 +49,7 @@ public class ReminderService {
     @Autowired
     public ReminderService(AllMothers allMothers,
                            AllCallStatusTokens allCallStatusTokens,
-                           IVRService ivrService,
+                           IVRService callService,
                            ScheduleTrackingService scheduleTrackingService,
                            MotechSchedulerService motechSchedulerService,
                            @Value("#{mCheck['ivr.callback.url']}") String callbackUrl,
@@ -54,7 +57,7 @@ public class ReminderService {
                            PreferredCallTimeService preferredCallTimeService) {
         this.allMothers = allMothers;
         this.allCallStatusTokens = allCallStatusTokens;
-        this.ivrService = ivrService;
+        this.callService = callService;
         this.scheduleTrackingService = scheduleTrackingService;
         this.motechSchedulerService = motechSchedulerService;
         this.callbackUrl = callbackUrl;
@@ -83,8 +86,12 @@ public class ReminderService {
         allCallStatusTokens.createOrReplaceByPhoneNumber(callStatusToken);
 
         Date retryTime = LocalTimeUtil.now().plusMinutes(retryInterval).toDateTimeToday().toDate();
-        MotechEvent event = new MotechEvent(AllConstants.RETRY_IVR_CALL_EVENT_SUBJECT, new HashMap<String, Object>());
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put(CONTACT_NUMBER, mother.contactNumber());
+        parameters.put(MotechSchedulerService.JOB_ID_KEY, UUID.randomUUID().toString());
+        MotechEvent event = new MotechEvent(AllConstants.RETRY_CALL_EVENT_SUBJECT, parameters);
         RunOnceSchedulableJob job = new RunOnceSchedulableJob(event, retryTime);
+
         log.info(MessageFormat.format("Scheduling a retry call job with the following information: {0}", job));
         motechSchedulerService.safeScheduleRunOnceJob(job);
     }
@@ -95,7 +102,7 @@ public class ReminderService {
                 mother.contactNumber(),
                 new HashMap<String, String>(),
                 MessageFormat.format(callbackUrl, dayWithReferenceToRegistrationDate));
-        ivrService.initiateCall(callRequest);
+        callService.initiateCall(callRequest);
     }
 
     private void scheduleTomorrowsCall(String motherId, String scheduleName, String dayWithReferenceToRegistrationDate, Mother mother) {

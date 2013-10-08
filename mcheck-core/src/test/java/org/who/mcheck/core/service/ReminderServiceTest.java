@@ -135,15 +135,18 @@ public class ReminderServiceTest {
                 new CallStatusToken("1234567890", CallStatus.Unsuccessful)
                         .withDaySinceDelivery("Day4")
                         .withCallAttemptNumber(1));
-        verify(motechSchedulerService).safeScheduleRunOnceJob(assertJob(new LocalTime(9, 5)));
+        verify(motechSchedulerService).safeScheduleRunOnceJob(assertJob(new LocalTime(9, 5), "1234567890"));
     }
 
-    private RunOnceSchedulableJob assertJob(final LocalTime retryTime) {
+    private RunOnceSchedulableJob assertJob(final LocalTime retryTime, final String contactNumber) {
         return argThat(new ArgumentMatcher<RunOnceSchedulableJob>() {
             @Override
             public boolean matches(Object o) {
                 RunOnceSchedulableJob job = (RunOnceSchedulableJob) o;
-                return retryTime.toDateTimeToday().toDate().equals(job.getStartDate()) && "RETRY-IVR-CALL-EVENT".equals(job.getMotechEvent().getSubject());
+                return retryTime.toDateTimeToday().toDate().equals(job.getStartDate())
+                        && "RETRY-CALL-EVENT".equals(job.getMotechEvent().getSubject())
+                        && job.getMotechEvent().getParameters().get("contactNumber").equals(contactNumber)
+                        && job.getMotechEvent().getParameters().get(MotechSchedulerService.JOB_ID_KEY) != null;
             }
         });
     }
