@@ -28,7 +28,7 @@ public class RetryReminderServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        retryReminderService = new RetryReminderService(allReminderStatusTokens, motechSchedulerService, "5");
+        retryReminderService = new RetryReminderService(allReminderStatusTokens, motechSchedulerService, "5", "true");
     }
 
     @Test

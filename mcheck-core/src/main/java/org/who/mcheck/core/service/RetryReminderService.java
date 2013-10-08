@@ -25,19 +25,26 @@ public class RetryReminderService {
     private final Log log = LogFactory.getLog(RetryReminderService.class);
 
     private final MotechSchedulerService motechSchedulerService;
+    private final boolean shouldRetry;
     private AllReminderStatusTokens allReminderStatusTokens;
     private final int retryInterval;
 
     @Autowired
     public RetryReminderService(AllReminderStatusTokens allReminderStatusTokens,
                                 MotechSchedulerService motechSchedulerService,
-                                @Value("#{mCheck['ivr.retry.interval']}") String retryInterval) {
+                                @Value("#{mCheck['ivr.retry.interval']}") String retryInterval,
+                                @Value("#{mCheck['ivr.should.retry']}") String shouldRetry) {
         this.allReminderStatusTokens = allReminderStatusTokens;
         this.motechSchedulerService = motechSchedulerService;
         this.retryInterval = IntegerUtil.tryParse(retryInterval, AllConstants.DEFAULT_VALUE_FOR_RETRY_INTERVAL);
+        this.shouldRetry = Boolean.parseBoolean(shouldRetry);
     }
 
     public void scheduleRetry(String contactNumber, String day, int attemptNumber) {
+        if (!shouldRetry) {
+            log.info("Retry disabled, so not scheduling retry jobs");
+            return;
+        }
         ReminderStatusToken reminderStatusToken = new ReminderStatusToken(contactNumber,
                 ReminderStatus.Unsuccessful)
                 .withDaySinceDelivery(day)
