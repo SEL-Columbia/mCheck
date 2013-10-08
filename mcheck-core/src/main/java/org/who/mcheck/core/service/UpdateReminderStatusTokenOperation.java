@@ -10,7 +10,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.who.mcheck.core.domain.ReminderStatusToken;
 import org.who.mcheck.core.repository.AllReminderStatusTokens;
 
@@ -19,15 +19,12 @@ import java.text.MessageFormat;
 import static java.text.MessageFormat.format;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
-@Service
+@Component
 public class UpdateReminderStatusTokenOperation implements INodeOperation, ApplicationContextAware {
 
     private final Log log = LogFactory.getLog(UpdateReminderStatusTokenOperation.class);
     private AllReminderStatusTokens allReminderStatusTokens;
     private ApplicationContext applicationContext;
-
-    private UpdateReminderStatusTokenOperation() {
-    }
 
     @Autowired
     public UpdateReminderStatusTokenOperation(AllReminderStatusTokens allReminderStatusTokens) {
@@ -41,7 +38,11 @@ public class UpdateReminderStatusTokenOperation implements INodeOperation, Appli
                 log.info("AllReminderStatusTokens is null, so autowiring it");
                 allReminderStatusTokens = applicationContext.getBean(AllReminderStatusTokens.class);
                 if (allReminderStatusTokens == null) {
-                    log.error("Autowiring of AllReminderStatusTokens did not work!");
+                    log.error("Autowiring AllReminderStatusTokens. Second try!");
+                    allReminderStatusTokens = (AllReminderStatusTokens) applicationContext.getBean(Class.forName("org.who.mcheck.core.repository.AllReminderStatusTokens"));
+                }
+                if (allReminderStatusTokens == null) {
+                    log.error("Could not autowire AllReminderStatusTokens!");
                 }
             }
             ReminderStatusToken token = allReminderStatusTokens.findByContactNumber(session.getPhoneNumber());
@@ -57,7 +58,8 @@ public class UpdateReminderStatusTokenOperation implements INodeOperation, Appli
             token.markCallStatusAsSuccessful();
             allReminderStatusTokens.update(token);
         } catch (Exception e) {
-            log.error(MessageFormat.format("Error when executing UpdateReminderStatusTokenOperation. Exception: {0}, Stack trace: {1}", e, getFullStackTrace(e)));
+            log.error(MessageFormat.format("Error when executing UpdateReminderStatusTokenOperation. Message: {0}, Stack trace: {1}",
+                    e.getMessage(), getFullStackTrace(e)));
         }
     }
 
