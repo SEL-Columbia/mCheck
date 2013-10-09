@@ -44,7 +44,7 @@ public class UpdateReminderStatusTokenOperation implements INodeOperation {
                         session.getPhoneNumber(), session));
                 return;
             }
-            log.warn(
+            log.info(
                     format("Found a call status for phone number: {0}, Updating the status to successful. Call detail: {1}",
                             session.getPhoneNumber(),
                             ToStringBuilder.reflectionToString(((FlowSessionRecord) session).getCallDetailRecord())));
